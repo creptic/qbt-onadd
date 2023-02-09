@@ -1,2 +1,2 @@
 # qbt-helper-onadd
-Sets custom settings when adding a torrent to qBittorent, including seedtime, speeds and radio limit.  Customisable to set by category,public or private.
+Sets custom settings to single torrent to qBittorent when added. Including seedtime, speeds and radio limit. Customize to set by category, or tracker. 
