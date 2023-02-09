@@ -1,17 +1,28 @@
 # qbt-onadd 
- - Sets custom settings to a single torrent in qBittorent when added.
- - Does not effect other settings or torrents in qBittorrent. No cron required.
+ - Sets custom settings to a single torrent in qBittorent, when added or run manually.
+ - Does not effect other settings or torrents in qBittorrent. No cron or required.
  - Change tag name, speed and ratio limits, seeding time limit, and category (must exist).
  - Customize values depending on category(s) and/or user defined tracker(s). 
- - Customize private, public or unknown (no tracker info returned from qbittorent-cli) tracker(s).
- - Options, settings and paths are all edited directly in script. Unset values do not set/change qbittorrent settings
+ - Customize settings depending on private, public or unknown (no tracker info found) tracker(s).
+ - Options and settings are edited directly in script. Uses qBittorrent setting for empty values.  
  - Command line options including dry run and log level overrides.
  - Commented code. Ability to add more categoy checks (copy/paste and edit existing code).
- - Example code included in script (bottom codeblock). Moduler which makes changing code easy. 
+ - Example code included in script (bottom code-block). Moduler which makes changing code easy. 
  - Logging can be set to none, console (terminal), or file (must be writable). Useful for testing.
- - Run from terminal, or add to qBittorrent External Add path. [ scriptpath/qbt-onadd.sh "%T" "%L" ]
+ - Run from terminal, or add to qBittorrent External Add path.
+ 
 ### Requirements:
- - https://github.com/fedarovich/qbittorrent-cli
+- https://github.com/fedarovich/qbittorrent-cli
+- qBittorent url and login must be set in qbittorrent-cli manually. (See [Installation](#installation) for instructions)    
+***
+### Basic Usage:
+- Teminal: (category is optional)
+```
+ $ ./path/to/script/ torrent_hash category 
+```
+Note: torrent_hash must be 40 characters in length, or change skip_hash_check="1" setting in script.
+- qBittorrent
+  add ```/scriptpath/qbt-onadd.sh "%T" "%L"``` to External Add path in qBittorent. 
 ***
 ## Table of Contents
 1. [General Info](#general-info)
