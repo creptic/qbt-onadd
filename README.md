@@ -4,10 +4,10 @@
  - Change tag name, speed and ratio limits, seeding time limit, and category (must exist).
  - Customize values depending on category or tracker. 
  - Customize private, public or unknown (no tracker info returned from qbittorent-cli) tracker(s).
- - Options, settings and paths are all edited directly in script. Null values are ignored (not set).
+ - Options, settings and paths are all edited directly in script.
  - Command line options including dry run and log level overrides.
  - Moduler which makes adding and editing custom code easy. 
- - Logging can be set to console, file (must be writable) or none. Useful for testing. 
+ - Logging can be set to none, console (terminal), or file (must be writable). Useful for testing.
  - Run from terminal, or add to qBittorrent External Add path. [ scriptpath/qbt-onadd.sh "%T" "%L" ]
 ### Requirements:
  - https://github.com/fedarovich/qbittorrent-cli
