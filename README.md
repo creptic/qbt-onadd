@@ -6,7 +6,7 @@
  - Customize private, public, unknown (no tracker info returned from qbittorent-cli ) tracker(s).
  - Options are all edited directly from script.
  - Command line options including dry run, log levels and url.
- - Automatic Torrent Management (ATM) can be disabled.
+ - Moduler to make adding and editing custom code easy. 
  - Logging can be set to console (terminal), single file or none. 
  - Run from terminal, or add to qBittorrent External Add path. [ scriptpath.sh "%T" "%L" ]
 ### Requirements:
