@@ -6,7 +6,7 @@
  - Customize private, public or unknown (no tracker info returned from qbittorent-cli) tracker(s).
  - Options are all edited directly in script.
  - Command line options including dry run, log levels and url.
- - Moduler to make adding and editing custom code easy. 
+ - Moduler which makes adding and editing custom code easy. 
  - Logging can be set to console (terminal), single file or none. 
  - Run from terminal, or add to qBittorrent External Add path. [ scriptpath.sh "%T" "%L" ]
 ### Requirements:
