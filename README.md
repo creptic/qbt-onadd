@@ -1,5 +1,5 @@
 # qbt-onadd 
- - Sets custom settings to a single torrent in qBittorent when added, without affection other settings or torrents in qBittorrent.
+ - Sets custom settings to a single torrent in qBittorent when added, without affecting other settings or torrents in qBittorrent.
  - Change category (must exist), seedtime, tag name, speed and radio limits. -=[ User Defined ]=-
  - Customize values depending on category or tracker(s). -=[ User Defined ]=- 
  - Logging can be set to console, single file or none -=[ User Defined ]=- 
