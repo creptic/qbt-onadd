@@ -3,8 +3,8 @@
  - Does not effect other settings or torrents in qBittorrent.
  - Change category (must exist), seedtime, tag name, speed and radio limits.
  - Customize values depending on category or tracker. 
- - Customize private, public, unknown (no tracker info returned from qbittorent-cli ) tracker(s).
- - Options are all edited directly from script.
+ - Customize private, public or unknown (no tracker info returned from qbittorent-cli) tracker(s).
+ - Options are all edited directly in script.
  - Command line options including dry run, log levels and url.
  - Moduler to make adding and editing custom code easy. 
  - Logging can be set to console (terminal), single file or none. 
