@@ -1,12 +1,13 @@
 # qbt-onadd 
  - Sets custom settings to a single torrent in qBittorent when added.
- - Does not effect other settings or torrents in qBittorrent. No cron needed.
+ - Does not effect other settings or torrents in qBittorrent. No cron required.
  - Change tag name, speed and ratio limits, seeding time limit, and category (must exist).
- - Customize values depending on category or tracker. 
+ - Customize values depending on category(s) and/or user defined tracker(s). 
  - Customize private, public or unknown (no tracker info returned from qbittorent-cli) tracker(s).
- - Options, settings and paths are all edited directly in script.
+ - Options, settings and paths are all edited directly in script. Unset values do not set/change qbittorrent settings
  - Command line options including dry run and log level overrides.
- - Moduler which makes adding and editing custom code easy. 
+ - Commented code. Ability to add more categoy checks (copy/paste and edit existing code).
+ - Example code included in script (bottom codeblock). Moduler which makes changing code easy. 
  - Logging can be set to none, console (terminal), or file (must be writable). Useful for testing.
  - Run from terminal, or add to qBittorrent External Add path. [ scriptpath/qbt-onadd.sh "%T" "%L" ]
 ### Requirements:
