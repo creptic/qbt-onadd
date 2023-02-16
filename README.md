@@ -47,9 +47,8 @@ limit. Other options like ATM and sequential downloading can be enabled or disab
 ***
 A little intro about the installation. 
 ```
-$ git clone https://example.com
-$ cd ../path/to/the/file
-$ chmod +x file
+$ cd ../path/to/qbt-onadd.sh (qbt-onadd-minimal.sh if using minimal version from the extras folder)
+$ chmod +x qbt-onadd.sh
 ```
 Side information: To use the application in a special environment use ```lorem ipsum``` to start
 ## Usage
