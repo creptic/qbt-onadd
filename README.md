@@ -11,28 +11,29 @@
  - Logging can be set to none, console (terminal), or file (must be writable). Useful for testing.
  - Minimal version available with example code (removed cmdline,logging,error checking and config).  
  - Run from terminal, or add to qBittorrent External Add path.
- 
-### Requirements:
+***
+## Requirements:
 - https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli)
-- qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Installation](#installation) for instructions)    
+- qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Installation](#installation))    
 - qbittorrent-cli also runs in powershell. This script has not been tested in powershell yet. 
 ***
-### Basic Usage:
+## Basic Usage:
 - Teminal: (category is optional)
 ```
  $ ./path/qbt-onadd.sh/ torrent_hash category 
 ```
 Note: torrent_hash must be 40 characters in length, or change skip_hash_check="1" setting in config.
 - qBittorrent
-  add ```/path/qbt-onadd.sh "%T" "%L"``` to External Add path in qBittorent to run when a torrent is added. 
+  add ```/path/qbt-onadd.sh "%T" "%L"``` to External Add path in qBittorent to run when a torrent is added.
 ***
 ## Table of Contents
 1. [General Info](#general-info)
 2. [Installation](#installation)
-3. [Usage](#usage)
-4. [Wiki](#wiki)
-### General Info
+3  [How it works](#how-it-works)
+4. [Usage](#usage)
+5. [Wiki](#wiki)
 ***
+## General Info
 &nbsp; &nbsp;Helper script for qbittorrent-cli, run manually or use for changing settings on a added torrent in qBittorrent.
 
 &nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. If you are into automating your torrents, this
@@ -45,14 +46,16 @@ that can be done by editing or adding section(s) in the config file. Settings in
 limit. Other options like ATM and sequential downloading can be enabled or disabled. 
 
 ***
-A little intro about the installation. 
+## Installation 
+Download qbt-onadd.sh or use git clone. 
 ```
-$ cd ../path/to/qbt-onadd.sh (qbt-onadd-minimal.sh if using minimal version from the extras folder)
+$ cd ../path/to/qbt-onadd.sh
 $ chmod +x qbt-onadd.sh
 ```
-Side information: To use the application in a special environment use ```lorem ipsum``` to start
-## Usage
+Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ```` 
 ***
+## How it works
+
 Give instructions on how to collaborate with your project.
 > Maybe you want to write a quote in this part. 
 > Should it encompass several lines?
@@ -60,3 +63,4 @@ Give instructions on how to collaborate with your project.
 ## Wiki
 ***
 For more information visit the WIki page
+Side information: To use the application in a special environment use ```lorem ipsum``` to start
