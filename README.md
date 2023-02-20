@@ -29,7 +29,7 @@ Note: torrent_hash must be 40 characters in length, or change skip_hash_check="1
 ## Table of Contents
 1. [General Info](#general-info)
 2. [Installation](#installation)
-3  [How it works](#how-it-works)
+3. [How it Works](#how-it-works)
 4. [Usage](#usage)
 5. [Wiki](#wiki)
 ***
@@ -55,7 +55,27 @@ $ chmod +x qbt-onadd.sh
 Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ```` 
 ***
 ## How it works
+- When a torrent is added, and the 'External Add' path is set with /path/to/qbt-onadd.sh "%T" "%L" <br />
+- Or qbt-onadd is run in terminal with <args> <torrent_hash> <category> (category and args are optional) <br /> 
+***
+#### Category: 
+&nbsp; &nbsp;&nbsp; &nbsp; Script looks for a matching category in your configuration file [Category:NAME]. If the category you used, when you added torrent matches "NAME" then it will set setting(s) from that section in config. The script will then exit (unless check_both="1" in config). Commented out or null ("") values makes no change to the value. Checking by category requires "%L" <br /> <br/>
+Note: Add more sections to add more category checks, and set values. The order of values in section dont matter. <br />
+***
+#### Trackers:
+In order to check trackers check_for_private_trackers="1" must be set in config settings. <br />
+- Needs least one tracker url in the list (only up to port). Comma seperated.  <br /> 
+- Example: ```private_tracker="https<nolink>://tracker.com,http://<nolink>noport.net"``` <br />
+- If you are adding a Defined; ```tracker_name="http://<nolink>noport.net"``` also needs to be in the [Defined:NAME] section.
 
+                                                                                     
+ 
+ There are four types of trackers:
+ 1. Defined: A tracker that was found in config [Tracker:NAME]. This requires tracker_name="url" to be set
+ 2. Private: Tracker that was found in private_tracker list ([Settings] in config)
+ 3. Public: Tracker that was not found in list, and tracker(s) from qbittorent-cli was not empty.
+ 4. Unknown: No tracker was returned from qbittorrent-cli (Changes tag to "Unknown" and exits)
+ 
 Give instructions on how to collaborate with your project.
 > Maybe you want to write a quote in this part. 
 > Should it encompass several lines?
