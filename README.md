@@ -84,3 +84,20 @@ Give instructions on how to collaborate with your project.
 ***
 For more information visit the WIki page
 Side information: To use the application in a special environment use ```lorem ipsum``` to start
+
+
+```mermaid
+graph LR
+A[Check for category] --> F{Found Category?}  
+E[Check for Defined Tracker] 
+D{Apply Settings}
+F --> D
+F --> G{Check Trackers?} --> E --> H{Found Defined?} --> D
+H --> J{If defined only =0} --> K(Check tracker list) -->L{Found in list} --Private -->D 
+D --> Exit 
+J --> Exit
+G --> Exit
+L --Public --> D
+
+
+
