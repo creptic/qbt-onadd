@@ -128,7 +128,7 @@ That's it. Now you seen how it works, below are a list of variables, settings an
 Customize the settings to your liking in the config you changed path in earlier.
 ***
 ## Auto changing when torrent is added
-&nbsp; &nbsp;&nbsp; &nbsp; Open your qBittorrent server (webui), go to options then downloads. At the bottom is a open called "Run external program". In  'Run external program on torrent added' add the the path with "%I" "%L". argument. "%I" is the torrents hash (v1). "%L" is the Category used (if any) when torrent was added. If you do not wish to use category checks simply use just "%I". Check the box, when you have are ready. Click the save.
+&nbsp; &nbsp;&nbsp; &nbsp; Open your qBittorrent server (webui), go to options then downloads. At the bottom is a open called "Run external program". In  'Run external program on torrent added' add the the path with "%I" "%L". argument. "%I" is the torrents hash (v1). "%L" is the Category used (if any) when torrent was added. If you do not wish to use category checks simply use just "%I". Check the box, when you have are ready. Click the save button.
 
 1) Example: ```` /home/user/qbt-onadd.sh "%I" "%L" ```` 
 2) Example:```` /home/user/qbt-onadd.sh -f "%I" "%L" ````  (log to file specified in settings.conf) See commandline options below. <br />
@@ -144,8 +144,9 @@ By default this script does the following in order:
 
 By default, when one of these is found. It will only change the tag name to type found. For example when no tracker is found in list, it will change the torrents tag to "Public" Excluding the test category which sets the tag to "test" and seedtime to one minute for testing. New settings and or sections need to be added or edited depending on your needs.
 
-*Note if no tracker if found in step 2. it will use settings in [Unknown]. <br />
-**Change name when adding new types. for example: [Category:Linux] will check for a category named Linux (case sensitive). You can do the same for [Defined:Trackername]. <br /> ***When adding a defined you must add a url (ex:tracker_name="https<nolink>://tracker.org") to the section.
+* Note: if no tracker if found in step 2. it will use settings in [Unknown]. <br />
+* Change name when adding new types. for example: [Category:Linux] will check for a category named Linux (case sensitive). You can do the same for [Defined:Trackername]. <br /> 
+* When adding a defined you must add a url (ex:tracker_name="https<nolink>://tracker.org") to the section.
 
 #### Category: 
 &nbsp; &nbsp;&nbsp; &nbsp; Script looks for a matching category in your configuration file [Category:NAME]. If the category you used, when you added torrent matches "NAME" then it will set setting(s) from that section in config. The script will then exit (unless check_both="1" in config). Commented out or null ("") values makes no change to the value. Checking by category requires "%L" in qBittorrent, or passed in commandline. <br /> <br/>
