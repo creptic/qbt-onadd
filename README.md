@@ -1,14 +1,16 @@
 # qbt-onadd 
  - Sets custom settings to a single torrent in qBittorent, when added or run manually.
- - Does not effect other settings or torrents in qBittorrent. No cron required.
- - Change tag name, speed and ratio limits, seeding time limit, and category (must exist).
- - Customize values depending on category(s) and/or user defined tracker(s). 
- - Customize settings depending on private, public or unknown (no tracker info found) tracker(s).
- - Options and settings are edited directly in a config file. Uses qBittorrent setting for empty values.  
- - Command line options including dry run and log level overrides.
- - Add custom categorys and trackers based tracker list or specified tracker url. 
- - Each category or tracker can have its own settings. All customization can be done in config.  
+ - Does not effect global settings, or torrents in qBittorrent. No cron required.
+ - Add tag(s), change upload and download speeds, ratio limit, seeding time, and /or category.
+ - Customize values depending on category(s) ,defined tracker(s), or a list of trackers. 
+ - Dry run and test before making changes, All the settings are be made in config.
+ - Uses qBittorrent setting for empty values, so only change what you prefer.  
+ - Command line options to help you easily authenticate with qBittorrent 
  - Logging can be set to none, console (terminal), or file (must be writable). Useful for testing.
+ - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
+ - All customization is done in config. No env variables, and no modifications to system.  
+ - Optional Verbose output (or to log) do show you whats being done. 
+ - Config file defaults to /home/user/.config/qbt-onadd/. Config can be set with -c in command-line, or hard-coded in script. You can write a default config with -w (see -h)  
  - Minimal version available with example code (removed cmdline,logging,error checking and config).  
  - Run from terminal, or add to qBittorrent External Add path.
 ***
@@ -22,7 +24,7 @@
 ```
  $ ./path/qbt-onadd.sh/ torrent_hash category 
 ```
-Note: torrent_hash must be 40 characters in length, or change skip_hash_check="1" setting in config.
+Note: torrent_hash must be at least 6 characters in length. To skip change skip_hash_check="1" setting in config
 - qBittorrent
   add ```/path/qbt-onadd.sh "%T" "%L"``` to External Add path in qBittorent to run when a torrent is added.
 ***
@@ -43,7 +45,7 @@ your trackers,categorys and settings are easily done in one config. If you need 
 you can set manually or by using a commandline arguement (see Usage below) <br /> <br />
 &nbsp; &nbsp;&nbsp; &nbsp; Besides tagging and using categorys to sort your torrents, you may also want to set options individually. All
 that can be done by editing or adding section(s) in the config file. Settings include speeds, seedtimes and ratio
-limit. Other options like ATM and sequential downloading can be enabled or disabled. 
+limit. Other options like ATM, superseed and sequential downloading can be enabled or disabled. 
 
 ***
 ## Installation 
@@ -63,9 +65,9 @@ Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-
 Note: Add more sections to add more category checks, and set values. The order of values in section dont matter. <br />
 ***
 #### Trackers:
-In order to check trackers check_for_private_trackers="1" must be set in config settings. <br />
+In order to check trackers check_trackers="1" must be set in config settings. <br />
 - Needs least one tracker url in the list (only up to port). Comma seperated.  <br /> 
-- Example: ```private_tracker="https<nolink>://tracker.com,http://<nolink>noport.net"``` <br />
+- Example: ```tracker="https<nolink>://tracker.com,http://<nolink>noport.net"``` <br />
 - If you are adding a Defined; ```tracker_name="http://<nolink>noport.net"``` also needs to be in the [Defined:NAME] section.
 
  There are four types of trackers:
@@ -75,6 +77,24 @@ In order to check trackers check_for_private_trackers="1" must be set in config 
  4. Unknown: No tracker was returned from qbittorrent-cli (Changes tag to "Unknown" and exits)
 
 ***
+### Command line options: script  {Argument} {Torrents Hash} {Category} (Optional)
+| Argument | Description  |
+| :---: | :---: |
+| -c [/path/config] [OPTION] .. HASH .. [CATEGORY]" | Use alternate path to config file. Other arguments can still be used |
+| -i [hash]  | Get full Information of a torrent and exit | 
+| -s [hash]  | Show Seedtime and ratio limit info of a torrent and exit |
+| -d [hash]  | Dry run. Run without changing settings |
+| -n [hash]  | Do Not log (log_level=0) [override] <br /> (No output to terminal) |
+| -v [hash]  | Log to terminal (Verbose) (log_level=1) [override] |
+| -f [hash] | Log to File (log_level=2) [override] |
+| -t | Test Connection. Show commands to manually set qBittorrent info in qbitorrent-cli |
+| -p | Sets Password in qbittorrent-cli settings (Read prompt) |
+| -u [url:port] | Sets qBittorent URL in qbittorrent-cli settings |
+| -l [login] | Sets qBittorrent Login name in qbittorent-cli settings | 
+| -w [path/filename] | Write a default config file to specified path/name | 
+| -z | Show torrent list (Useful to get a torrent's hash) | 
+| -h | Display this Help and exit"
+
 ### Settings (settings.conf):
 | Name | Value (empty=no change) | Description  |
 | :---:   | :---: | :---: |
@@ -92,17 +112,17 @@ In order to check trackers check_for_private_trackers="1" must be set in config 
 | connection_check | "1" (other=no) | Enable to do a connection check |
 | check_trackers_if_category_found | "1" (other=no) | If category is found it will apply settings, and check both defined and tracker list |
 
-### Variables:
+### Variables: (settings.conf):
 | Name | Value (empty=no change) | Description (effects the torrent only) |
 | :---:   | :---: | :---: |
-| tag | "string"    | Adds tag (blank spaces or , create multiple tags) |
+| tag | "string"    | Adds tag(s). If it contains blank spaces or comma separated values, then multiple tags will be created. They are shown in alphabetical order in qBittorrent |
 | maxup | "number"   | Maximum upload speed in KB/s (0=Unlimited) |
 | maxdl | "number"   | Maximum download speed in KB/s (0=Unlimited)|
-| seedtime | "00:00:00"   | Seedtime [DD:HH:MM] (00:00:00=Unlimited) |
+| seedtime | "00:00:00"   | Seedtime [DD:HH:MM] (00:00:00=Unlimited) <br /> To view seedtime use -s or -i command. See help (-h) |
 | ratio_limit | "number"   | The torrents ratio limit |
 | new_category | "string"   | Change category name (creates if it dont exist) |
 | atm | "0" or "1"   | Enable (1) or Disable(0) Automatic Torrent Management |
-| superseed | "0" or "1" | Enable(1) or Disable(0) superseeding |
+| superseed | "0" or "1" | Enable(1) or Disable(0) Superseeding |
 | seqdl | "0" or "1"   | Enable or Disable Sequential downloading |
 ***
  
