@@ -77,7 +77,8 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
  4. Unknown: No tracker was returned from qbittorrent-cli (Changes tag to "Unknown" and exits)
 
 ***
-### Command line options: script  {Argument} {Torrents Hash} {Category} (Optional)
+### Command line options: 
+/path/script  {Argument} {Torrents Hash} {Category} (Optional)
 | Argument | Description  |
 | :---: | :---: |
 | -c [/path/config] [OPTION] .. HASH .. [CATEGORY]" | Use alternate path to config file. Other arguments can still be used |
@@ -112,7 +113,8 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
 | connection_check | "1" (other=no) | Enable to do a connection check |
 | check_trackers_if_category_found | "1" (other=no) | If category is found it will apply settings, and check both defined and tracker list |
 
-### Variables: (settings.conf):
+### Variables: (settings.conf): 
+Values can be used in all sections (besides [Settings]) The order of variables do not matter
 | Name | Value (empty=no change) | Description (effects the torrent only) |
 | :---:   | :---: | :---: |
 | tag | "string"    | Adds tag(s). If it contains blank spaces or comma separated values, then multiple tags will be created. They are shown in alphabetical order in qBittorrent |
