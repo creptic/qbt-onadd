@@ -24,7 +24,7 @@
 ```
  $ ./path/qbt-onadd.sh/ torrent_hash category 
 ```
-Note: torrent_hash must be at least 6 characters in length. To skip change skip_hash_check="1" setting in config
+Note: torrent_hash must be at least 6 characters in length. Change skip_hash_check="1" setting in config to skip.
 - qBittorrent
   add ```/path/qbt-onadd.sh "%T" "%L"``` to External Add path in qBittorent to run when a torrent is added.
 ***
