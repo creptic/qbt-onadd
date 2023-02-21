@@ -68,13 +68,44 @@ In order to check trackers check_for_private_trackers="1" must be set in config 
 - Example: ```private_tracker="https<nolink>://tracker.com,http://<nolink>noport.net"``` <br />
 - If you are adding a Defined; ```tracker_name="http://<nolink>noport.net"``` also needs to be in the [Defined:NAME] section.
 
-                                                                                     
- 
  There are four types of trackers:
  1. Defined: A tracker that was found in config [Tracker:NAME]. This requires tracker_name="url" to be set
  2. Private: Tracker that was found in private_tracker list ([Settings] in config)
  3. Public: Tracker that was not found in list, and tracker(s) from qbittorent-cli was not empty.
  4. Unknown: No tracker was returned from qbittorrent-cli (Changes tag to "Unknown" and exits)
+
+***
+### Settings (settings.conf):
+| Name | Value (empty=no change) | Description  |
+| :---:   | :---: | :---: |
+| qbt_cli | "string" 	| Path to qbittorrent-cli (ex:"/usr/bin/qbt"). Required |
+| trackers | "string" | List of comma separated trackers. (ex: "https<nolink>://tracker.com,https<nolink>://tracker2.com").No : or port |
+| check_for_trackers | "1" (other=no)| Enable to check for trackers, either defined ones or by tracker list |
+| defined_trackers_only | "1" (other=no) | Check defined trackers only, when checking trackers (Category is still checked) |
+| wait_time | "number" | Time to wait (sleep) in seconds |
+| log_level | "1" or "2" (other=none) | "1" : Output to terminal (console) <br /> "2" : Output to file (see log_file) |
+| log_file | "string" | Path to log file (ex."/home/user/.config/qbt-onadd/log.txt) (see log_level) |
+| log_clear | "1" (other=no) | Show only one entry in log. Clears the log every time run |
+| skip_wait_dryrun | "1" (other=no) | Skips the wait_time if set, when doing a dry-run |
+| skip_hash_check | "1" (other=no) | Skips the hash check. Hash check searches running torrents for a match |
+| skip_name | "1" (other=no) | Skips getting the name of the torrent |
+| connection_check | "1" (other=no) | Enable to do a connection check |
+| check_trackers_if_category_found | "1" (other=no) | If category is found it will apply settings, and check both defined and tracker list |
+
+### Variables:
+| Name | Value (empty=no change) | Description (effects the torrent only) |
+| :---:   | :---: | :---: |
+| tag | "string"    | Adds tag (blank spaces or , create multiple tags) |
+| maxup | "number"   | Maximum upload speed in KB/s (0=Unlimited) |
+| maxdl | "number"   | Maximum download speed in KB/s (0=Unlimited)|
+| seedtime | "00:00:00"   | Seedtime [DD:HH:MM] (00:00:00=Unlimited) |
+| ratio_limit | "number"   | The torrents ratio limit |
+| new_category | "string"   | Change category name (creates if it dont exist) |
+| atm | "0" or "1"   | Enable (1) or Disable(0) Automatic Torrent Management |
+| superseed | "0" or "1" | Enable(1) or Disable(0) superseeding |
+| seqdl | "0" or "1"   | Enable or Disable Sequential downloading |
+***
+ 
  
 Give instructions on how to collaborate with your project.
 > Maybe you want to write a quote in this part. 
@@ -86,6 +117,8 @@ For more information visit the WIki page
 Side information: To use the application in a special environment use ```lorem ipsum``` to start
 
 
+ 
+ 
 ```mermaid
 graph LR
 A[Check for category] --> F{Found Category?}  
