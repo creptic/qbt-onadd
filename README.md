@@ -142,7 +142,7 @@ By default this script does the following in order:
 2) Check for a Defined  match in settings.conf section [Defined:Name]. Check the url in 'tracker_name' for a match. If found apply settings and exit. If not found continue to 3.
 3) Check tracker(s) in 'trackers' list in [Settings]. If found then use settings from [Private] section. If not found use the settings from [Public].
 
-By default, when one of these is found. It will only change the tag name to type found. For example when no tracker is found in list, it will change the torrents tag to "Public" Excluding the test category which sets the tag to "test" and seedtime to one minute for testing. New settings and or sections need to be added or edited depending on your needs.
+By default, when one of these is found. It will only change the tag name to type found. For example when no tracker is found in list, it will change the torrents tag to "Public" Excluding the test category which sets the tag to "test" and seedtime for testing. New settings and or sections need to be added or edited depending on your needs.
 
 * Note: if no tracker if found in step 2. it will use settings in [Unknown]. <br />
 * Change name when adding new types. for example: [Category:Linux] will check for a category named Linux (case sensitive). You can do the same for [Defined:Trackername]. <br /> 
