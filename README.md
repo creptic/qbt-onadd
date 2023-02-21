@@ -1,5 +1,5 @@
 # qbt-onadd 
- - Sets custom settings to a single torrent in qBittorent, when added or run manually.
+ - Sets custom settings to a single torrent in qBittorent server (webui), when added or run manually.
  - Does not effect global settings, or torrents in qBittorrent. No cron required.
  - Add tag(s), change upload and download speeds, ratio limit, seeding time, and /or category.
  - Customize values depending on category(s) ,defined tracker(s), or a list of trackers. 
@@ -16,7 +16,7 @@
 ***
 ## Requirements:
 - https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli)
-- qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Installation](#installation))    
+- qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
 - qbittorrent-cli also runs in powershell. This script has not been tested in powershell yet. 
 ***
 ## Basic Usage:
@@ -31,11 +31,14 @@ Note: torrent_hash must be at least 6 characters in length. To skip change skip_
 ## Table of Contents
 1. [General Info](#general-info)
 2. [Installation](#installation)
-3. [How it Works](#how-it-works)
-4. [Usage](#usage)
-5. [Wiki](#wiki)
+3. [Setup and Testing](#setup-and-testing)
+4. [Auto changing when torrent is added](#auto-changing-when-torrent-is-added)
+5. [How it Works](#how-it-works)
+6. [Usage](#usage)
+7. [Powershell](#powershell)
+8. [Flow-Chart](#flow-chart)
 ***
-## General Info
+## General Info:
 &nbsp; &nbsp;Helper script for qbittorrent-cli, run manually or use for changing settings on a added torrent in qBittorrent.
 
 &nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. If you are into automating your torrents, this
@@ -48,7 +51,7 @@ that can be done by editing or adding section(s) in the config file. Settings in
 limit. Other options like ATM, superseed and sequential downloading can be enabled or disabled. 
 
 ***
-## Installation 
+## Installation:
 Download qbt-onadd.sh or use git clone. 
 ```
 $ cd ../path/to/qbt-onadd.sh
@@ -56,28 +59,112 @@ $ chmod +x qbt-onadd.sh
 ```
 Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ```` 
 ***
-## How it works
-- When a torrent is added, and the 'External Add' path is set with /path/to/qbt-onadd.sh "%T" "%L" <br />
-- Or qbt-onadd is run in terminal with <args> <torrent_hash> <category> (category and args are optional) <br /> 
+## Setup and testing:
+Required: 
+- Running qBittorrent server (webui) (tested with qbittorrent-nox).
+- qbittorrent-cli installed
+
+We have no tracker info in config. so lets start with testing a category.
+When qbt-onadd.sh is first run. It will create a folder in ```` /home/yourusername/.config/qbt-onadd/ ````  with two files. settings.conf and a empty file log.txt. 
+* A copy settings.conf is in extras directory, or you can write one with -w
+
+If you want to use your own config path you have two options: 
+1) Change the path in script. ```` config="/path/settings.conf" ```` (use ```` qbt-onadd.sh -w /path/settings.conf ```` to write one, if you wish)
+2) Use the ```` qbt-onadd.sh -c /path/settings.conf ```` to point to the path of your config.
+
+Lets get started <br />
+
+&nbsp; &nbsp;&nbsp; &nbsp; First we need to add the path to qbittorrent-cli to the config file. The default path is /usr/bin/qbt). If this is the correct path you can skip this part. 
+Open up the config file created (by default is ```` /home/yourusername/.config/qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.<br />
+
+run ```` /path/qbt-onadd.sh -t  ```` 
+This will show your server settings in qbittorrent-cli, as well as commands to manually change your information via terminal. You can also use qbt-onadd.sh -u -p or -l  to set. (see -h)
+
+Once you are have to correct info set. 
+run ```` /path/qbt-onadd.sh -z ```` to get a list of your torrents running. note the 6 character hash of a torrent.
+
+Lets do a dry-run and see what would be set. (hash=the 6 char hash seen on -z) 
+
+run ```` /path/qbt-onadd.sh -d hash test ```` 
+
+```
+$ [creptic@mc testing]$ ./qbt-onadd.sh -d aba9f0 test
+$ -=[***[Started]***]=-
+$   -Checking for qbittorrent-cli:[/usr/bin/qbt]
+$   -Checking for matching hash:[aba9f0]
+$   -Arguments:[-d aba9f0 test]
+$   -Hash:[aba9f0]
+$   -Category:[test]
+$   -Skipped connection check:[connection_check=0]
+$   -Skipped getting name:[skip_name=1]
+$   -Checking for matching category ...
+$   -Category found:[test]
+$   -Getting values from:[Category:test]
+$   -Using dry run:[Changes will not be applied]
+$   -Applying settings to qBittorrent ...
+$   -Tag(s) not set:[test]
+$   -Seedtime not set:[00:00:14] (ex:01:02:03) 
+$ -=[***[Finished]***]=-
+```
+run without the -d: 
+run ```` /path/qbt-onadd.sh hash test ```` <br /> 
+```
+$   -Applying settings to qBittorrent ...
+$   -Setting tag(s):[test]
+$   -Setting seedtime:[00:00:14] (00 Days: 00 Hours: 14 Minutes)
+$ -=[***[Finished]***]=-
+```
+**(shortend to not repeat output above)<br />
+
+After finished you should see a new tag was made called test with a seedtime of 14 minutes. 
+
+Finally 
+run  ```` /path/qbt-onadd.sh -s hash ```` 
+
+You should see the seedtime from the -d output. (14 minutes)
+
+That's it. Now you seen how it works, below are a list of variables, settings and command line options.<br />
+
+Customize the settings to your liking in the config you changed path in earlier.
 ***
+## Auto changing when torrent is added
+&nbsp; &nbsp;&nbsp; &nbsp; Open your qBittorrent server (webui), go to options then downloads. At the bottom is a open called "Run external program". In  'Run external program on torrent added' add the the path with "%I" "%L". argument. "%I" is the torrents hash (v1). "%L" is the Category used (if any) when torrent was added. If you do not wish to use category checks simply use just "%I". Check the box, when you have are ready. Click the save.
+
+1) Example: ```` /home/user/qbt-onadd.sh "%I" "%L" ```` 
+2) Example:```` /home/user/qbt-onadd.sh -f "%I" "%L" ````  (log to file specified in settings.conf) See commandline options below. <br />
+***
+## How it works
+- When a torrent is added, and the 'External Add' path is set with ```` /path/to/qbt-onadd.sh "%T" "%L" ````  in qBittorrent server (webui)<br />
+- Or qbt-onadd.sh is run in terminal with <args> <torrent_hash> <category> (category and args are optional) <br /> 
+-----
+By default this script does the following in order:
+1) Check for a Category match in settings.conf section [Category:Name] If found apply settings and exit. If not found continue to 2.
+2) Check for a Defined  match in settings.conf section [Defined:Name]. Check the url in 'tracker_name' for a match. If found apply settings and exit. If not found continue to 3.
+3) Check tracker(s) in 'trackers' list in [Settings]. If found then use settings from [Private] section. If not found use the settings from [Public].
+
+By default, when one of these is found. It will only change the tag name to type found. For example when no tracker is found in list, it will change the torrents tag to "Public" Excluding the test category which sets the tag to "test" and seedtime to one minute for testing. New settings and or sections need to be added or edited depending on your needs.
+
+*Note if no tracker if found in step 2. it will use settings in [Unknown]. <br />
+**Change name when adding new types. for example: [Category:Linux] will check for a category named Linux (case sensitive). You can do the same for [Defined:Trackername]. <br /> ***When adding a defined you must add a url (ex:tracker_name="https<nolink>://tracker.org") to the section.
+
 #### Category: 
-&nbsp; &nbsp;&nbsp; &nbsp; Script looks for a matching category in your configuration file [Category:NAME]. If the category you used, when you added torrent matches "NAME" then it will set setting(s) from that section in config. The script will then exit (unless check_both="1" in config). Commented out or null ("") values makes no change to the value. Checking by category requires "%L" <br /> <br/>
+&nbsp; &nbsp;&nbsp; &nbsp; Script looks for a matching category in your configuration file [Category:NAME]. If the category you used, when you added torrent matches "NAME" then it will set setting(s) from that section in config. The script will then exit (unless check_both="1" in config). Commented out or null ("") values makes no change to the value. Checking by category requires "%L" in qBittorrent, or passed in commandline. <br /> <br/>
 Note: Add more sections to add more category checks, and set values. The order of values in section dont matter. <br />
 ***
 #### Trackers:
 In order to check trackers check_trackers="1" must be set in config settings. <br />
 - Needs least one tracker url in the list (only up to port). Comma seperated.  <br /> 
-- Example: ```tracker="https<nolink>://tracker.com,http://<nolink>noport.net"``` <br />
-- If you are adding a Defined; ```tracker_name="http://<nolink>noport.net"``` also needs to be in the [Defined:NAME] section.
+- Example: ```tracker="http://tracker.net,http://noport.org"``` <br />
+- If you are adding a Defined; ```tracker_name="http://noport.net"``` also needs to be in the [Defined:NAME] section.
 
  There are four types of trackers:
- 1. Defined: A tracker that was found in config [Tracker:NAME]. This requires tracker_name="url" to be set
- 2. Private: Tracker that was found in private_tracker list ([Settings] in config)
+ 1. Defined: A tracker that was found in config [Tracker:NAME]. This requires tracker_name to be set (ex:tracker_name="https<nolink>://tracker.org")
+ 2. Private: Tracker that was found in tracker list ([Settings] in config)
  3. Public: Tracker that was not found in list, and tracker(s) from qbittorent-cli was not empty.
  4. Unknown: No tracker was returned from qbittorrent-cli (Changes tag to "Unknown" and exits)
-
 ***
-### Command line options: 
+## Usage:
+#### Command line options:
 /path/script  {Argument} {Torrents Hash} {Category} (Optional)
 | Argument | Description  |
 | :---: | :---: |
@@ -96,7 +183,7 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
 | -z | Show torrent list (Useful to get a torrent's hash) | 
 | -h | Display this Help and exit"
 
-### Settings (settings.conf):
+#### Settings (settings.conf):
 | Name | Value (empty=no change) | Description  |
 | :---:   | :---: | :---: |
 | qbt_cli | "string" 	| Path to qbittorrent-cli (ex:"/usr/bin/qbt"). Required |
@@ -113,10 +200,11 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
 | connection_check | "1" (other=no) | Enable to do a connection check |
 | check_trackers_if_category_found | "1" (other=no) | If category is found it will apply settings, and check both defined and tracker list |
 
-### Variables: (settings.conf): 
+#### Variables: (settings.conf): 
 Values can be used in all sections (besides [Settings]) The order of variables do not matter
 | Name | Value (empty=no change) | Description (effects the torrent only) |
 | :---:   | :---: | :---: |
+| tracker_name | "string" | Needed only for Defined trackers (ex:"https<nolink>://tracker.org") |
 | tag | "string"    | Adds tag(s). If it contains blank spaces or comma separated values, then multiple tags will be created. They are shown in alphabetical order in qBittorrent |
 | maxup | "number"   | Maximum upload speed in KB/s (0=Unlimited) |
 | maxdl | "number"   | Maximum download speed in KB/s (0=Unlimited)|
@@ -127,20 +215,14 @@ Values can be used in all sections (besides [Settings]) The order of variables d
 | superseed | "0" or "1" | Enable(1) or Disable(0) Superseeding |
 | seqdl | "0" or "1"   | Enable or Disable Sequential downloading |
 ***
- 
- 
-Give instructions on how to collaborate with your project.
-> Maybe you want to write a quote in this part. 
-> Should it encompass several lines?
-> This is how you do it.
-## Wiki
+## Powershell:
+qbittorrent-cli runs in powershell.
+
+I have not tested in powershell. I mainly run linux and haven't tested. Here are a few notes: <br /> 
+
+&nbsp; &nbsp;&nbsp; &nbsp; All varibles in script are double quoted so path strings might be ok. Only Postix for string manipulation was used, besides grep,cut and tr. No env vars used. No getopts, IFS, awk or sed (not sure if it matters). If text is a mess with colour code, set colour=0 or comment in globals. If path to /home/user/.config does not exist use -c or hard code the config path.
 ***
-For more information visit the WIki page
-Side information: To use the application in a special environment use ```lorem ipsum``` to start
-
-
- 
- 
+## Flow-Chart:
 ```mermaid
 graph LR
 A[Check for category] --> F{Found Category?}  
@@ -153,6 +235,6 @@ D --> Exit
 J --> Exit
 G --> Exit
 L --Public --> D
-
+***
 
 
