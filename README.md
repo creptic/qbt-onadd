@@ -17,7 +17,7 @@
 ## Requirements:
 - https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli)
 - qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
-- qbittorrent-cli also runs in powershell. This script has not been tested in powershell yet. 
+- qBittorrent server (webui). Tested with qbittorrent-nox
 ***
 ## Basic Usage:
 - Teminal: (category is optional)
