@@ -36,7 +36,6 @@ Note: torrent_hash must be at least 6 characters in length. Change skip_hash_che
 5. [How it Works](#how-it-works)
 6. [Usage](#usage)
 7. [Powershell](#powershell)
-8. [Flow-Chart](#flow-chart)
 ***
 ## General Info:
 &nbsp; &nbsp;Helper script for qbittorrent-cli, run manually or use for changing settings on a added torrent in qBittorrent.
@@ -136,13 +135,13 @@ That's it. Now you seen how it works, below are a list of variables, settings an
 
 Customize the settings to your liking in the config you changed path in earlier.
 ***
-## Auto changing when torrent is added
+## Auto changing when torrent is added:
 &nbsp; &nbsp;&nbsp; &nbsp; Open your qBittorrent server (webui), go to options then downloads. At the bottom is a open called "Run external program". In  'Run external program on torrent added' add the the path with "%I" "%L". argument. "%I" is the torrents hash (v1). "%L" is the Category used (if any) when torrent was added. If you do not wish to use category checks simply use just "%I". Check the box, when you have are ready. Click the save button.
 
 1) Example: ```` /home/user/qbt-onadd.sh "%I" "%L" ```` 
 2) Example:```` /home/user/qbt-onadd.sh -f "%I" "%L" ````  (log to file specified in settings.conf) See commandline options below. <br />
 ***
-## How it works
+## How it works:
 - When a torrent is added, and the 'External Add' path is set with ```` /path/to/qbt-onadd.sh "%T" "%L" ````  in qBittorrent server (webui)<br />
 - Or qbt-onadd.sh is run in terminal with <args> <torrent_hash> <category> (category and args are optional) <br /> 
 -----
@@ -226,25 +225,9 @@ Values can be used in all sections (besides [Settings]) The order of variables d
 | seqdl | "0" or "1"   | Enable or Disable Sequential downloading |
 ***
 ## Powershell:
-qbittorrent-cli runs in powershell.
+qbittorrent-cli runs in powershell <br /> <br />
+I mainly run linux and haven't tested. Here are a few notes: <br /> 
 
-I have not tested in powershell. I mainly run linux and haven't tested. Here are a few notes: <br /> 
-
-&nbsp; &nbsp;&nbsp; &nbsp; All varibles in script are double quoted so path strings might be ok. Only Postix for string manipulation was used, besides grep,cut and tr. No env vars used. No getopts, IFS, awk or sed (not sure if it matters). If text is a mess with colour code, set colour=0 or comment in globals. If path to /home/user/.config does not exist use -c or hard code the config path.
+&nbsp; &nbsp;&nbsp; &nbsp; All varibles in script are double quoted so path strings might be ok. Only Postix for string manipulation was used, besides grep,cut and tr. No env vars used. No getopts, IFS, awk or sed (not sure if it matters). If path to /home/user/.config does not exist, use -c or hard-code the config path.
 ***
-## Flow-Chart:
-```mermaid
-graph LR
-A[Check for category] --> F{Found Category?}  
-E[Check for Defined Tracker] 
-D{Apply Settings}
-F --> D
-F --> G{Check Trackers?} --> E --> H{Found Defined?} --> D
-H --> J{If defined only =0} --> K(Check tracker list) -->L{Found in list} --Private -->D 
-D --> Exit 
-J --> Exit
-G --> Exit
-L --Public --> D
-***
-
-
+ 
