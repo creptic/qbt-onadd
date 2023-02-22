@@ -228,6 +228,6 @@ Values can be used in all sections (besides [Settings]) The order of variables d
 qbittorrent-cli runs in powershell <br /> <br />
 I mainly run linux and haven't tested. Here are a few notes: <br /> 
 
-&nbsp; &nbsp;&nbsp; &nbsp; All varibles in script are double quoted so path strings might be ok. Only Postix for string manipulation was used, besides grep,cut and tr. No env vars used. No getopts, IFS, awk or sed (not sure if it matters). If path to /home/user/.config does not exist, use -c or hard-code the config path.
+&nbsp; &nbsp;&nbsp; &nbsp; All variables in script are double quoted so path strings might be ok. Only Postix for string manipulation was used, besides grep,cut and tr. No env vars used. No getopts, IFS, awk or sed (not sure if it matters). If path to /home/user/.config does not exist, use -c or hard-code the config path.
 ***
  
