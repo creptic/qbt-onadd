@@ -30,7 +30,7 @@ argu=$* # Needed to get arguments Do not remove
 ######
 #If not set use default settings.conf above, or use -c (see -h)
 config="" #If set and not found. script will exit (unless -c). (default="") 
-colour="0" #Enable or disable colour text in terminal (only applies to terminal)
+colour="1" #Enable or disable colour text in terminal (only applies to terminal)
 ######
 
 #Functions:
