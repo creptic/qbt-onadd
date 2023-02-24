@@ -30,7 +30,7 @@ argu=$* # Needed to get arguments Do not remove
 ######
 #If not set use default settings.conf above, or use -c (see -h)
 config="" #If set and not found. script will exit (unless -c). (default="") 
-colour="1" #Enable or disable colour text in terminal (only applies to terminal)
+color="1" #Enable or disable color text in terminal (only applies to terminal)
 ######
 
 #Functions:
@@ -43,17 +43,17 @@ function finished {
   exit 0
 }
 
-function colourize () {
+function colorize () {
   local orig_text="${*}"
-  local left="[" ;  local colour="[\e[32m"
-  local right="]" ; local end_colour="\e[0m]"
-  local new_text="" ; local no_colour="${orig_text:0:3}"
-  if [ "$no_colour" == "-=[" ]; then no_colour="1" ; fi 
-  if [ "$no_colour" != "1" ]; then 
-     new_text="${orig_text/"$left"/"$colour"}" 
-     new_text="${new_text/"$right"/"$end_colour"}"
-     left="(Invalid)" ; colour="(\e[31m"Invalid"\e[0m)"
-     new_text="${new_text/"$left"/"$colour"}"    
+  local left="[" ;  local color="[\e[32m"
+  local right="]" ; local end_color="\e[0m]"
+  local new_text="" ; local no_color="${orig_text:0:3}"
+  if [ "$no_color" == "-=[" ]; then no_color="1" ; fi 
+  if [ "$no_color" != "1" ]; then 
+     new_text="${orig_text/"$left"/"$color"}" 
+     new_text="${new_text/"$right"/"$end_color"}"
+     left="(Invalid)" ; color="(\e[31m"Invalid"\e[0m)"
+     new_text="${new_text/"$left"/"$color"}"    
      echo -e "$new_text" "\e[0m"
   else 
      echo "$orig_text" 
@@ -62,8 +62,8 @@ function colourize () {
 
 function dg.print () { 
   if [ "$log_level" == "1" ];then 
-     if [ "$colour" == "1" ];then 
-        colourize "${*}" 
+     if [ "$color" == "1" ];then 
+        colorize "${*}" 
       else
         echo "${*}"
      fi 
