@@ -79,8 +79,8 @@ When qbt-onadd.sh is first run. It will create a folder ```` /home/user/.qbt-ona
 * A copy settings.conf is in extras directory, or you can write one with -w
 
 If you want to use your own config path you have two options: 
-1) Change the path in script. ```` config="/path/settings.conf" ```` (use ```` qbt-onadd.sh -w /path/settings.conf ```` to write one, if you wish)
-2) Use the ```` qbt-onadd.sh -c /path/settings.conf ```` to point to the path of your config.
+1) Change the path in script. ```` config="/path/settings.conf" ````
+3) Use the ```` qbt-onadd.sh -c /path/settings.conf ```` to point to the path of your config.
 
 Lets get started <br />
 
@@ -159,7 +159,8 @@ By default, when one of these is found. It will only change the tag name to type
 * When adding a defined you must add a url (ex:tracker_name="https<nolink>://tracker.org") to the section.
 
 #### Category: 
-&nbsp; &nbsp;&nbsp; &nbsp; Script looks for a matching category in your configuration file [Category:NAME]. If the category you used, when you added torrent matches "NAME" then it will set setting(s) from that section in config. The script will then exit (unless check_both="1" in config). Commented out or null ("") values makes no change to the value. Checking by category requires "%L" in qBittorrent, or passed in commandline. <br /> <br/>
+&nbsp; &nbsp;&nbsp; &nbsp; Script looks for a matching category in your configuration file [Category:NAME]. If the category you used, when you added torrent matches "NAME" then it will set setting(s) from that section in config. The script will then exit (unless check_both="1" in config). Commented out or null ("") values makes no change to the value. 
+Checking by category requires "%L" in qBittorrent, or passed in commandline. <br /> <br/>
 Note: Add more sections to add more category checks, and set values. The order of values in section dont matter. <br />
 ***
 #### Trackers:
@@ -226,4 +227,3 @@ Values can be used in all sections (besides [Settings]) The order of variables d
 | superseed | "0" or "1" | Enable(1) or Disable(0) Superseeding |
 | seqdl | "0" or "1"   | Enable or Disable Sequential downloading |
 ***
- 
