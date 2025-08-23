@@ -3,9 +3,9 @@
  - Does not effect global settings, or torrents in qBittorrent. No cron required.
  - Add tag(s), change upload and download speeds, ratio limit, seeding time, and /or category.
  - Customize values depending on category(s) ,defined tracker(s), or a list of trackers. 
- - Dry run and test before making changes, All the settings are be made in config.
+ - Dry run and test before making changes. (see -d) 
  - Uses qBittorrent setting for empty values, so only change what you prefer. 
- - Command line options to help you easily authenticate with qBittorrent 
+ - Command line options to help you easily authenticate with qBittorrent  
  - Logging can be set to none(default), console (terminal), or file.(default=/home/user/.qbt-onadd/log.txt).
  - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
  - All customization is done in config. No env variables, and no modifications to system.  
@@ -66,7 +66,8 @@ $ chmod +x qbt-onadd.sh
 ```
 
 
-Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ```` 
+Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ````
+    - No settings.conf used with minimal version. the script must be edited.
 ***
 ## Setup and testing:
 Required: 
@@ -74,7 +75,7 @@ Required:
 - qbittorrent-cli installed
 
 We have no tracker info in config. so lets start with testing a category.
-When qbt-onadd.sh is first run. It will create a folder ```` /home/yourusername/.qbt-onadd/ ````  with two files. settings.conf and a empty file log.txt. 
+When qbt-onadd.sh is first run. It will create a folder ```` /home/user/.qbt-onadd/ ````  with two files. settings.conf and a empty file log.txt. 
 * A copy settings.conf is in extras directory, or you can write one with -w
 
 If you want to use your own config path you have two options: 
@@ -84,7 +85,7 @@ If you want to use your own config path you have two options:
 Lets get started <br />
 
 &nbsp; &nbsp;&nbsp; &nbsp; First we need to add the path to qbittorrent-cli to the config file. The default path is /usr/bin/qbt). If this is the correct path you can skip this part. 
-Open up the config file created (by default is ```` /home/yourusername/.qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.<br />
+Open up the config file created (by default is ```` /home/user/.qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.<br />
 
 run ```` /path/qbt-onadd.sh -t  ```` 
 This will show your server settings in qbittorrent-cli, as well as commands to manually change your information via terminal. You can also use qbt-onadd.sh -u -p or -l  to set. (see -h)
@@ -140,7 +141,7 @@ Customize the settings to your liking in the config you changed path in earlier.
 &nbsp; &nbsp;&nbsp; &nbsp; Open your qBittorrent server (webui), go to options then downloads. At the bottom is a open called "Run external program". In  'Run external program on torrent added' add the the path with "%I" "%L". argument. "%I" is the torrents hash (v1). "%L" is the Category used (if any) when torrent was added. If you do not wish to use category checks simply use just "%I". Check the box, when you have are ready. Click the save button.
 
 1) Example: ```` /home/user/qbt-onadd.sh "%I" "%L" ```` 
-2) Example:```` /home/user/qbt-onadd.sh -f "%I" "%L" ````  (log to file specified in settings.conf) See commandline options below. <br />
+2) Example:```` /home/user/qbt-onadd.sh -f "%I" "%L" ````  (log to file specified in settings.conf) See commandline options below. (-f) <br />
 ***
 ## How it works:
 - When a torrent is added, and the 'External Add' path is set with ```` /path/to/qbt-onadd.sh "%T" "%L" ````  in qBittorrent server (webui)<br />
