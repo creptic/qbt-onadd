@@ -17,7 +17,7 @@
  - Run from terminal, or add to qBittorrent External Add path in your qBittorrent webui or config.
 ***
 ## Requirements:
-- https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli)
+- https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli) (tested with v1.8.24285.1)
 - qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
 - qBittorrent server (webui). Tested with qbittorrent-nox
 ***
@@ -53,12 +53,6 @@ limit. Other options like ATM, superseed and sequential downloading can be enabl
 ***
 ## Installation:
 Download [qbt-onadd.sh](https://github.com/creptic/qbt-onadd/blob/main/qbt-onadd.sh) 
-
-Or use wget
-```
-$ wget --no-check-certificate https://github.com/creptic/qbt-onadd/blob/main/qbt-onadd.sh
-$ chmod +x qbt-onadd.sh
-```
 
 Or use git-clone: 
 ```
