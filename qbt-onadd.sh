@@ -12,7 +12,7 @@
 #         - All unused or null variables will not change a setting.
 #         - Set settings for user defined categories and trackers.
 #         - Note: Seedtime does not show in qBittorent , use -t or -i to see current seedtime in terminal.
-#         - Default config path is /home/user/.confg/qbt-onadd/settings.conf
+#         - Default config path is /home/user/.qbt-onadd/settings.conf
 # Requires: https://github.com/fedarovich/qbittorrent-cli
 #         - qBittorrent server info needs to be set in qbittorrent-cli (see -h and -t).
 #         - Add the path of this script with "%I" or "%I" "%L" arguement in  
@@ -25,8 +25,8 @@
 ###################
 argu=$* # Needed to get arguments Do not remove
 ######
-#Config is stored in /home/user/.config/qbt-onadd/settings.conf by default.
-#Use -w /path/configname to write one if needed.
+#Config is stored in /home/user/.qbt-onadd/settings.conf by default.
+#Use -w /path/settings.conf to write one if needed.
 ######
 #If not set use default settings.conf above, or use -c (see -h)
 config="" #If set and not found. script will exit (unless -c). (default="") 
@@ -741,9 +741,9 @@ function check_for_config {
   #Get config. If it don't exist check permissions and try to create dir/config
   local theuser=`(whoami)`
   #Using ~/.config/qbt-onadd/settings.conf
-  local base_config="/home/""$theuser""/.config"
-  local config_dir="$base_config""/qbt-onadd/"
-  local config_file="$base_config""/qbt-onadd/settings.conf"
+  local base_config="/home/""$theuser"""
+  local config_dir="$base_config""/.qbt-onadd/"
+  local config_file="$base_config""/.qbt-onadd/settings.conf"
   local log="$config_dir""log.txt"
   
   check_for_config_cmdline
