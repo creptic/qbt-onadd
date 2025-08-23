@@ -144,7 +144,7 @@ Customize the settings to your liking in the config you changed path in earlier.
 2) Example:```` /home/user/qbt-onadd.sh -f "%I" "%L" ````  (log to file specified in settings.conf) See commandline options below. (-f) <br />
 ***
 ## How it works:
-- When a torrent is added, and the 'External Add' path is set with ```` /path/to/qbt-onadd.sh "%T" "%L" ````  in qBittorrent server (webui)<br />
+- When a torrent is added, and the 'External Add' path is set with ```` /path/qbt-onadd.sh "%T" "%L" ````  in qBittorrent server (webui)<br />
 - Or qbt-onadd.sh is run in terminal with <args> <torrent_hash> <category> (category and args are optional) <br /> 
 -----
 By default this script does the following in order:
