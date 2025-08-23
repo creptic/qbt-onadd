@@ -75,8 +75,8 @@ Required:
 - qbittorrent-cli installed
 
 We have no tracker info in config. so lets start with testing a category.
-When qbt-onadd.sh is first run. It will create a folder ```` /home/user/.qbt-onadd/ ````  with two files. settings.conf and a empty file log.txt. 
-* A copy settings.conf is in extras directory, or you can write one with -w
+When qbt-onadd.sh is first run, and no settings.conf found in ```` /home/user/.qbt-onadd/ ````  settings.conf and a empty file log.txt is created. 
+* A copy settings.conf is in extras directory (github), or you can write one with -w 
 
 If you want to use your own config path you have two options: 
 1) Change the path in script. ```` config="/path/settings.conf" ````
