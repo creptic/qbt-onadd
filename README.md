@@ -41,11 +41,10 @@ Note: torrent_hash must be at least 6 characters in length. Change skip_hash_che
 ## General Info:
 &nbsp; &nbsp;Helper script for qbittorrent-cli, run manually or use for changing settings on a added torrent in qBittorrent.
 
-&nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. If you are into automating your torrents, this
-script may be of use. General uses are setting limits to torrents you add based on category or tracker. You
-may want to add a tag, or change category name to a torrent to use when torrent is completed. Adding or editting
-your trackers,categorys and settings are easily done in one config. If you need to authenticate with qBittorrent
-you can set manually or by using a commandline arguement (see Usage below) <br /> <br />
+&nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. General uses are setting limits to torrents you add based on category or tracker. You
+may want to add a tag, or change category name to a torrent to use when torrent is added. Adding or editting
+your trackers,categorys and settings are easily done in one config, or can be run with a minimal version and hardcode your desired settings (see bottom of qbt-onadd-minimal.sh in extras for more info). <br /> <br />
+If you need to authenticate with qBittorrent, Credentials can be set manually in qbittorrent-cli or by using a commandline arguement. (see Usage below) <br /> <br />
 &nbsp; &nbsp;&nbsp; &nbsp; Besides tagging and using categorys to sort your torrents, you may also want to set options individually. All
 that can be done by editing or adding section(s) in the config file. Settings include speeds, seedtimes and ratio
 limit. Other options like ATM, superseed and sequential downloading can be enabled or disabled. 
