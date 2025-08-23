@@ -10,7 +10,7 @@
  - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
  - All customization is done in config. No env variables, and no modifications to system.  
  - Optional Verbose output (or to log) do show you whats being done. 
- - Config file defaults to /home/user/.config/qbt-onadd/. Config can be set with -c in command-line, or hard-coded in script. You can write a default config with -w (see -h)  
+ - Config file defaults to /home/user/.qbt-onadd/. Config can be set with -c in command-line, or hard-coded in script. You can write a default config with -w (see -h)  
  - Minimal version available with example code (removed cmdline,logging,error checking and config).  
  - Run from terminal, or add to qBittorrent External Add path.
 ***
@@ -73,7 +73,7 @@ Required:
 - qbittorrent-cli installed
 
 We have no tracker info in config. so lets start with testing a category.
-When qbt-onadd.sh is first run. It will create a folder in ```` /home/yourusername/.config/qbt-onadd/ ````  with two files. settings.conf and a empty file log.txt. 
+When qbt-onadd.sh is first run. It will create a folder ```` /home/yourusername/.qbt-onadd/ ````  with two files. settings.conf and a empty file log.txt. 
 * A copy settings.conf is in extras directory, or you can write one with -w
 
 If you want to use your own config path you have two options: 
@@ -83,7 +83,7 @@ If you want to use your own config path you have two options:
 Lets get started <br />
 
 &nbsp; &nbsp;&nbsp; &nbsp; First we need to add the path to qbittorrent-cli to the config file. The default path is /usr/bin/qbt). If this is the correct path you can skip this part. 
-Open up the config file created (by default is ```` /home/yourusername/.config/qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.<br />
+Open up the config file created (by default is ```` /home/yourusername/.qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.<br />
 
 run ```` /path/qbt-onadd.sh -t  ```` 
 This will show your server settings in qbittorrent-cli, as well as commands to manually change your information via terminal. You can also use qbt-onadd.sh -u -p or -l  to set. (see -h)
@@ -201,7 +201,7 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
 | defined_trackers_only | "1" (other=no) | Check defined trackers only, when checking trackers (Category is still checked) |
 | wait_time | "number" | Time to wait (sleep) in seconds |
 | log_level | "1" or "2" (other=none) | "1" : Output to terminal (console) <br /> "2" : Output to file (see log_file) |
-| log_file | "string" | Path to log file (ex."/home/user/.config/qbt-onadd/log.txt) (see log_level) |
+| log_file | "string" | Path to log file (ex."/home/user/.qbt-onadd/log.txt) (see log_level) |
 | log_clear | "1" (other=no) | Show only one entry in log. Clears the log every time run |
 | skip_wait_dryrun | "1" (other=no) | Skips the wait_time if set, when doing a dry-run |
 | skip_hash_check | "1" (other=no) | Skips the hash check. Hash check searches running torrents for a match |
@@ -223,11 +223,5 @@ Values can be used in all sections (besides [Settings]) The order of variables d
 | atm | "0" or "1"   | Enable (1) or Disable(0) Automatic Torrent Management |
 | superseed | "0" or "1" | Enable(1) or Disable(0) Superseeding |
 | seqdl | "0" or "1"   | Enable or Disable Sequential downloading |
-***
-## Powershell:
-qbittorrent-cli runs in powershell <br /> <br />
-I mainly run linux and haven't tested. Here are a few notes: <br /> 
-
-&nbsp; &nbsp;&nbsp; &nbsp; All variables in script are double quoted so path strings might be ok. Only Postix for string manipulation was used, besides grep,cut and tr. No env vars used. No getopts, IFS, awk or sed (not sure if it matters). If path to /home/user/.config does not exist, use -c or hard-code the config path.
 ***
  
