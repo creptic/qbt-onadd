@@ -8,7 +8,7 @@
 # Usage: ./script.sh <options> <torrent hash> <optional qBittorrent category)> 
 #         - Run in terminal or as a external add path for qBittorrent.  
 #         - Add the path of this script with "%I" or "%I" "%L" arguement in  
-#         - Run external program on torrent ADDED in your qBittorrent settings.
+#           Run external program on torrent ADDED in your qBittorrent settings.
 #         - Example: /path/thisscriptname "%I,%L"
 ###################
 ###-=[Globals]=-###
