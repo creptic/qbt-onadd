@@ -80,7 +80,7 @@ If you want to use your own config path you have two options:
 Lets get started <br />
 
 &nbsp; &nbsp;&nbsp; &nbsp; First we need to add the path to qbittorrent-cli to the config file. The default path is /usr/bin/qbt). If this is the correct path you can skip this part. 
-Open up the config file created (by default is ```` /home/user/.qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.<br />
+Open up the config file created (by default is ```` /home/user/.qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier. Note. If you are using a terminal and want to use dry run (-d) also set ```` log_level="1" ```` <br />
 
 run ```` /path/qbt-onadd.sh -t  ```` 
 This will show your server settings in qbittorrent-cli, as well as commands to manually change your information via terminal. You can also use qbt-onadd.sh -u -p or -l  to set. (see -h)
