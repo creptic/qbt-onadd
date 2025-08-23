@@ -19,7 +19,7 @@
 ## Requirements:
 - https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli) (tested with v1.8.24285.1)
 - qBittorrent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
-- qBittorrent server (webui). Tested with qbittorrent-nox (tested with qBittorrent v5.1.0)
+- qBittorrent server (webui). Tested with qbittorrent-nox (qBittorrent v5.1.0)
 ***
 ## Basic Usage:
 - Teminal: (category is optional)
