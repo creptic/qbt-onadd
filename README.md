@@ -13,7 +13,7 @@
  - Config file defaults to /home/user/.qbt-onadd/
  - Config can be set with -c in command-line, or hard-coded in script. You can write a default config with -w (see -h)  
  - Minimal version available with example code (removed cmdline,logging,error checking and config).  
- - Run from terminal, or add to qBittorrent External Add path.
+ - Run from terminal, or add to qBittorrent External Add path in your qbtorrent webui.
 ***
 ## Requirements:
 - https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli)
@@ -36,7 +36,6 @@ Note: torrent_hash must be at least 6 characters in length. Change skip_hash_che
 4. [Auto changing when torrent is added](#auto-changing-when-torrent-is-added)
 5. [How it Works](#how-it-works)
 6. [Usage](#usage)
-7. [Powershell](#powershell)
 ***
 ## General Info:
 &nbsp; &nbsp;Helper script for qbittorrent-cli, run manually or use for changing settings on a added torrent in qBittorrent.
