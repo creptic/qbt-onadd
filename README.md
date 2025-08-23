@@ -66,7 +66,7 @@ Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-
 ***
 ## Setup and testing:
 Required: 
-- Running qBittorrent server (webui) (tested with qBittorrent v5.1.0).
+- Running qBittorrent server (tested with qBittorrent v5.1.0).
 - qbittorrent-cli installed
 
 We have no tracker info in config. so lets start with testing a category.
