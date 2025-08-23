@@ -18,8 +18,8 @@
 ***
 ## Requirements:
 - https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli) (tested with v1.8.24285.1)
-- qBittorent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
-- qBittorrent server (webui). Tested with qbittorrent-nox
+- qBittorrent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
+- qBittorrent server (webui). Tested with qbittorrent-nox (tested with qBittorrent v5.1.0)
 ***
 ## Basic Usage:
 - Teminal: (category is optional)
@@ -66,7 +66,7 @@ Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-
 ***
 ## Setup and testing:
 Required: 
-- Running qBittorrent server (tested with qBittorrent v5.1.0).
+- Running qBittorrent or qBittorrent-nox server .
 - qbittorrent-cli installed
 
 We have no tracker info in config. so lets start with testing a category.
