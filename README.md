@@ -53,6 +53,8 @@ limit. Other options like ATM, superseed and sequential downloading can be enabl
 ***
 ## Installation:
 Download [qbt-onadd.sh](https://github.com/creptic/qbt-onadd/blob/main/qbt-onadd.sh) 
+
+Or use wget
 ```
 $ wget --no-check-certificate https://github.com/creptic/qbt-onadd/blob/main/qbt-onadd.sh
 $ chmod +x qbt-onadd.sh
@@ -64,7 +66,6 @@ $ git clone https://github.com/creptic/qbt-onadd
 $ cd qbt-onadd
 $ chmod +x qbt-onadd.sh
 ```
-
 
 Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ````
     - No settings.conf used with minimal version. the script must be edited.
