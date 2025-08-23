@@ -4,7 +4,7 @@
  - Add tag(s), change upload and download speeds, ratio limit, seeding time, and /or category.
  - Customize values depending on category(s) ,defined tracker(s), or a list of trackers. 
  - Dry run and test before making changes, All the settings are be made in config.
- - Uses qBittorrent setting for empty values, so only change what you prefer.  
+ - Uses qBittorrent setting for empty values, so only change what you prefer. 
  - Command line options to help you easily authenticate with qBittorrent 
  - Logging can be set to none, console (terminal), or file (must be writable). Useful for testing.
  - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
