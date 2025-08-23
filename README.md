@@ -10,7 +10,8 @@
  - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
  - All customization is done in config. No env variables, and no modifications to system.  
  - Optional Verbose output (or to log) do show you whats being done. 
- - Config file defaults to /home/user/.qbt-onadd/. Config can be set with -c in command-line, or hard-coded in script. You can write a default config with -w (see -h)  
+ - Config file defaults to /home/user/.qbt-onadd/
+   Config can be set with -c in command-line, or hard-coded in script. You can write a default config with -w (see -h)  
  - Minimal version available with example code (removed cmdline,logging,error checking and config).  
  - Run from terminal, or add to qBittorrent External Add path.
 ***
