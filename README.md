@@ -5,14 +5,14 @@
  - Customize values depending on category(s) ,defined tracker(s), or a list of trackers. 
  - Dry run and test before making changes. (see -d) 
  - Uses qBittorrent setting for empty values, so only change what you prefer. 
- - Command line options to help you easily authenticate with qBittorrent  
+ - Command line options to help you easily authenticate with qBittorrent.  
  - Logging can be set to none(default), console (terminal), or file.(default=/home/user/.qbt-onadd/log.txt).
  - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
  - All customization is done in config. No env variables, and no modifications to system.  
  - Optional Verbose output (or to log) do show you whats being done. 
  - Config file defaults to /home/user/.qbt-onadd/settings.conf
  - Config can be set with -c in command-line, or hard-coded in script.
- - You can write a default config with -w (see -h)  
+ - You can write a default config with -w (see -h).  
  - Minimal version available with example code (removed cmdline,logging,error checking and config).  
  - Run from terminal, or add to qBittorrent External Add path in your qBittorrent webui or config.
 ***
