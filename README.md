@@ -9,7 +9,7 @@
  - Logging can be set to none(default), console (terminal), or file.(default=/home/user/.qbt-onadd/log.txt).
  - Additional options like ATM, Superseed, and Sequential download can be enabled/disabled.
  - All customization is done in config. No env variables, and no modifications to system.  
- - Optional Verbose output (or to log) do show you whats being done. 
+ - Optional verbose output to terminal or to log file.txt.
  - Config file defaults to /home/user/.qbt-onadd/settings.conf
  - Config can be set with -c in command-line, or hard-coded in script.
  - You can write a default config with -w (see -h).  
