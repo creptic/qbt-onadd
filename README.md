@@ -17,8 +17,8 @@
  - Run from terminal, or add to qBittorrent External Add path in your qBittorrent webui or config.
 ***
 ## Requirements:
-- https://github.com/fedarovich/qbittorrent-cli  also available in [AUR](https://aur.archlinux.org/packages/qbittorrent-cli) (tested with v1.8.24285.1)
-- qBittorrent server info can be set manully in qbittorrent-cli or via script. (See [Setup and Testing](#setup-and-testing))    
+- https://github.com/creptic/qbtctl
+- qBittorrent server info can be set manully in qbtctl (See [Setup and Testing](#setup-and-testing))    
 - qBittorrent server (webui). Tested with qbittorrent-nox (qBittorrent v5.1.0)
 ***
 ## Basic Usage:
@@ -39,10 +39,10 @@ Note: torrent_hash must be at least 6 characters in length. Change skip_hash_che
 6. [Usage](#usage)
 ***
 ## General Info:
-&nbsp; &nbsp;Helper script for qbittorrent-cli, run manually or use for changing settings on a added torrent in qBittorrent.
+&nbsp; &nbsp;Helper script for qbtctl, run manually or use for changing settings on a added torrent in qBittorrent.
 
 &nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. General uses are setting limits to torrents added based on category or tracker. Add a tag, or change category name to a torrent to use when torrent is added. Adding or editing your trackers, categorys, tags and settings are easily done in one config, or can be run with a minimal version and hardcode your desired settings (see bottom of qbt-onadd-minimal.sh in extras for more info). <br /> <br />
-To authenticate with qBittorrent, Credentials can be set in qbittorrent-cli or by using a commandline arguement. (see Usage below) <br /> <br />
+To authenticate with qBittorrent, Credentials can be set in qbtctl by using a commandline arguement. -i or --setup (see Usage below) <br /> <br />
 &nbsp; &nbsp;&nbsp; &nbsp; All settings can be edited in the config file per tracker and/or category. Settings include speeds, seedtimes and ratio
 limit. Other options like ATM, superseed and sequential downloading can be enabled or disabled. 
 
@@ -56,14 +56,11 @@ $ git clone https://github.com/creptic/qbt-onadd
 $ cd qbt-onadd
 $ chmod +x qbt-onadd.sh
 ```
-
-Note: If you are using the minimal version in extras folder, use ```` qbt-onadd-minimal.sh ````
-    - No settings.conf used with minimal version. the script must be edited.
 ***
 ## Setup and testing:
 Required: 
 - Running qBittorrent or qBittorrent-nox server .
-- qbittorrent-cli installed
+- qbtctl installed and setup
 
 We have no tracker info in config. so lets start with testing a category.
 When qbt-onadd.sh is first run, and no settings.conf found in ```` /home/user/.qbt-onadd/ ````  settings.conf and a empty file log.txt is created. 
@@ -75,16 +72,14 @@ If you want to use your own config path you have two options:
 
 Lets get started <br />
 
-&nbsp; &nbsp;&nbsp; &nbsp; First we need to add the path to qbittorrent-cli to the config file. The default path is /usr/bin/qbt). If this is the correct path you can skip this part. 
-Open up the config file created (by default is ```` /home/user/.qbt-onadd/settings.conf```` ) . Change ```` qbt_cli="/path/to/qbittorrent-cli" ```` to the path to qbittorrent-cli, you installed earlier.  <br />
+&nbsp; &nbsp;&nbsp; &nbsp; First we need to add the path to qbtctl to the config file. The default path is /usr/bin/qbtctl). If this is the correct path you can skip this part. 
+Open up the config file created (by default is ```` /home/user/.qbt-onadd/settings.conf```` ) . Change ```` qbtctl="/path/to/qbtctl" ```` to the path to qbtctl, you installed earlier.  <br />
 
 *** Note. If you are using a terminal and want to use dry run (-d) also set ```` log_level="1" ```` <br />
-
-run ```` /path/qbt-onadd.sh -t  ```` 
-This will show your server settings in qbittorrent-cli, as well as commands to manually change your information via terminal. You can also use qbt-onadd.sh -u -p or -l  to set. (see -h)
+Setup qbtctl using qbtctl -i or --setup and save in default directory when prompted. (see qbtctl page)
 
 Once you are have to correct info set. 
-run ```` /path/qbt-onadd.sh -z ```` to get a list of your torrents running. note the 6 character hash of a torrent.
+run ```` /path/qbt-onadd.sh -t ```` to get a list of your torrents running. note the 6 character hash of a torrent.
 
 Lets do a dry-run and see what would be set. (hash=the 6 char hash seen on -z) 
 
@@ -98,7 +93,6 @@ $   -Checking for matching hash:[aba9f0]
 $   -Arguments:[-d aba9f0 test]
 $   -Hash:[aba9f0]
 $   -Category:[test]
-$   -Skipped connection check:[connection_check=0]
 $   -Skipped getting name:[skip_name=1]
 $   -Checking for matching category ...
 $   -Category found:[test]
@@ -175,17 +169,11 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
 | :---: | :---: |
 | -c [/path/config] [OPTION] .. HASH .. [CATEGORY]" | Use alternate path to config file. Other arguments can still be used |
 | -i [hash]  | Get full Information of a torrent and exit | 
-| -s [hash]  | Show Seedtime and ratio limit info of a torrent and exit |
 | -d [hash]  | Dry run. Run without changing settings |
 | -n [hash]  | Do Not log (log_level=0) [override] <br /> (No output to terminal) |
 | -v [hash]  | Log to terminal (Verbose) (log_level=1) [override] |
-| -f [hash] | Log to File (log_level=2) [override] |
-| -t | Test Connection. Show commands to manually set qBittorrent info in qbitorrent-cli |
-| -p | Sets Password in qbittorrent-cli settings (Read prompt) |
-| -u [url:port] | Sets qBittorent URL in qbittorrent-cli settings |
-| -l [login] | Sets qBittorrent Login name in qbittorent-cli settings | 
-| -w [path/filename] | Write a default config file to specified path/name | 
-| -z | Show torrent list (Useful to get a torrent's hash) | 
+| -f [hash] | Log to File (log_level=2) [override] | 
+| -t | Show torrent list (Useful to get a torrent's hash) | 
 | -h | Display this Help and exit"
 
 #### Settings (settings.conf):
@@ -200,10 +188,9 @@ In order to check trackers check_trackers="1" must be set in config settings. <b
 | log_file | "string" | Path to log file (ex."/home/user/.qbt-onadd/log.txt) (see log_level) |
 | log_clear | "1" (other=no) | Show only one entry in log. Clears the log every time run |
 | skip_wait_dryrun | "1" (other=no) | Skips the wait_time if set, when doing a dry-run |
-| skip_hash_check | "1" (other=no) | Skips the hash check. Hash check searches running torrents for a match |
 | skip_name | "1" (other=no) | Skips getting the name of the torrent |
-| connection_check | "1" (other=no) | Enable to do a connection check |
 | check_trackers_if_category_found | "1" (other=no) | If category is found it will apply settings, and check both defined and tracker list |
+
 
 #### Variables: (settings.conf): 
 Values can be used in all sections (besides [Settings]) The order of variables do not matter
