@@ -1,8 +1,8 @@
 #!/bin/bash
 ############################
-# Author: Creptic :: 02/19/23 v0.98
+# Author: Creptic :: 03/03/26 v1.00
 # Source: https://github.com/creptic/qbt-onadd
-# Purpose: Change settings to a single torrent in qBittorrent with qbittorrent-cli.
+# Purpose: Change settings to a single torrent in qBittorrent with qbtctl
 #         - Run in terminal or as a external add path for qBittorrent.  
 #         - No effect to other torrents running, or global settings in qBittorrent.
 #         - Change setting depending on tracker(s) from a user string.
@@ -13,8 +13,8 @@
 #         - Set settings for user defined categories and trackers.
 #         - Note: Seedtime does not show in qBittorent , use -t or -i to see current seedtime in terminal.
 #         - Default config path is /home/user/.qbt-onadd/settings.conf
-# Requires: https://github.com/fedarovich/qbittorrent-cli
-#         - qBittorrent server info needs to be set in qbittorrent-cli (see -h and -t).
+# Requires: https://github.com/creptic/qbtctl
+#         - qBittorrent server info needs to be set in qbtctl (-i or --setup)
 #         - Add the path of this script with "%I" or "%I" "%L" arguement in  
 #         - Run external program on torrent ADDED in your qBittorrent settings settings.
 #         - Example: /home/foo/qbt-added.sh "%I,%L" 
@@ -38,8 +38,8 @@ function finished {
   #Exit 0
   dg.print "-=[***[Finished]***]=-"
   #Uncomment to see all values and settings set when finished [Debug]
-  #show_defined_settings
-  #show_settings
+ # show_defined_settings
+ # show_settings
   exit 0
 }
 
@@ -71,117 +71,71 @@ function dg.print () {
   if [ "$log_level" == "2" ];then echo "${*}" >> "$log_file" ;fi
 }
 
-function show_settings_qbittorrent_cli {
-  #Display qbittorrent-cli settings and commands to auth with qbittorent : See (-t) in help
-  #And test connection with qbittorrent-cli and qBittorrent server
-  local t_con=""
-  echo "-=[""$qbt_cli""]=-"
-  echo "- May need to restart qBittorrent server if any info changed, and having issue connecting"
-  $qbt_cli settings
-  echo "-----"
-  echo "- Use a command below to manually set qBittorrent server info in qbittorrent-cli "
-  echo "- These can also be run with this script (-l <user>,-u <url>,or -p) [see help -h]"        
-  echo "- URL:"$qbt_cli" settings set url <url> (ex:http://localhost:8080)"
-  echo "- User name:"$qbt_cli" settings set username <username>"
-  echo "- Password:"$qbt_cli" settings set password [read and follow prompt]"
-  echo "-----"
-  echo -n " Checking Status: "
-  local t_con=`$qbt_cli global info -F property:name="connection status"`
-  echo -n "[""$t_con""]" ; echo ""
+function show_single_info_qbtctl {
+  #Display info from qbtctl: See (-t) in help
+  $qbtctl -h "$hash" -s
   exit 0
 }
 
-function set_password_qbittorremt_cli {
-  #Change qBittorrent 'Password' in qbittorrent-cli, and show settings: See (-p, and -t) in help
-  echo "###########################################"
-  echo "# Passwords are stored in qbittorrent_cli #" 
-  echo "# - No password will be saved to script - #"
-  echo "###########################################"
-  $qbt_cli settings set password
-  $qbt_cli settings
-  exit 0
-}
-
-function set_url_qbittorremt_cli () {
-  #Change qBittorrent 'URL' in qbittorrent-cli, and show settings: See (-u, and -t) in help
-  local url="$1" 
-  echo "#########################################"
-  echo "# URL will be stored in qbittorrent_cli #" 
-  echo "# --- Example:http://localhost:8080 --- #"
-  echo "#########################################"
-  if [ "$url" == "" ]; then 
-     echo "No URL entered .... exiting" ; exit 1
-  else
-     $qbt_cli settings set url "$url"
-     $qbt_cli settings
-  fi
-  exit 0
-}
-
-function set_login_name_qbittorremt_cli () { 
-  #Change qBittorrent 'User name' in qbittorrent-cli, and show settings: See (-l, and -t) in help
-  local login="$1" 
-  echo "###########################################"
-  echo "# Login will be stored in qbittorrent_cli #" 
-  echo "###########################################"
-  if [ "$login" == "" ]; then 
-     echo "No Login name entered .... exiting" ; exit 1
-  else
-     echo "Changing User name to:[""$login""]"
-     $qbt_cli settings set username "$login"
-     $qbt_cli settings
-  fi
-  exit 0
-}
-
-function show_all_info_qbittorrent_cli {
-  #Display info from qbittorrent-cli: See (-t) in help
-  echo "Current Info for:["$hash"]"
-  $qbt_cli torrent properties "$hash"
-  $qbt_cli torrent share "$hash"
-  $qbt_cli torrent options "$hash"
-  local t_name=`$qbt_cli torrent content -F csv "$hash" | cut -d "," -f2 | tail -1`
-  t_name=$(echo "$t_name" | cut -d "/" -f1)
-  echo "Name:[""$t_name""]"
-  exit 0
-}
-
-function show_seedtime_info_qbittorrent_cli {
-  #Display seedtime info , and name of torrent from qbittorrent-cli: See (-s) in help
-  #Get torrent name from qbittorrent-cli 
-  local t_name=`$qbt_cli torrent content -F csv "$hash" | cut -d "," -f2 | tail -1`
-  t_name=$(echo "$t_name" | cut -d "/" -f1)
-  echo "Name:[""$t_name""]"
-  $qbt_cli torrent share "$hash"
-  exit 0
-}  
-
-function show_torrent_list_qbittorrent_cli {
-  #Display torrent list in qbittorrent-cli
-  $qbt_cli torrent list
+function show_torrent_list_qbtctl {
+  #Display torrent list in qbtctl
+  $qbtctl -a
   exit 0
 } 
 
-### Change setting(s) in qbittorrent-cli functions
+### Change setting(s) in qbtctl functions
+function change_tag {
+    local t_tag="$1"
+    local old_tag
+    old_tag="$($qbtctl -h "$hash" -gt)"
 
-function change_tag () {
-  #Set tag each word is a seperate tag name. removes ","
-  local t_tag="$1"
-  
-  if [[ "$t_tag" != "" && "$dry_run" != "1" ]]; then
-     t_tag=$(echo "$t_tag" | tr -s "," " ")
-     dg.print "  -Setting tag(s):[""$t_tag""]"   
-     for word in $t_tag; 
-       do 
-        `$qbt_cli torrent tags add "$hash" "$word"`
-     done
-   else
-      if [[ "$dry_run" == "1" && "$t_tag" != "" ]]; then 
-         dg.print "  -Tag(s) not set:[""$t_tag""]"
-      fi  
-  fi 
+    # Combine old and new tags
+    local combined="$t_tag"
+    if [[ -n "$old_tag" && "$t_tag" != "$old_tag" ]]; then
+        combined="$old_tag, $t_tag"
+    fi
+
+    # Deduplicate tags while preserving order
+    local deduped=""
+    local seen=""
+    local tag=""
+    local rest="$combined"
+
+    while [[ -n "$rest" ]]; do
+        # Extract first tag (up to first comma)
+        if [[ "$rest" == *,* ]]; then
+            tag="${rest%%,*}"
+            rest="${rest#*,}"
+        else
+            tag="$rest"
+            rest=""
+        fi
+
+        # Trim spaces
+        tag="${tag#"${tag%%[![:space:]]*}"}"
+        tag="${tag%"${tag##*[![:space:]]}"}"
+        local tag_lower="${tag,,}"
+
+        # Deduplicate
+        if [[ "$seen" != *",$tag_lower,"* ]]; then
+            if [[ -n "$deduped" ]]; then
+                deduped="$deduped, $tag"
+            else
+                deduped="$tag"
+            fi
+            seen="$seen,$tag_lower,"
+        fi
+    done
+
+    if [[ -n "$deduped" && "$dry_run" != "1" ]]; then
+        dg.print "  -Setting tag(s): [$deduped]"
+        $qbtctl -h "$hash" -st "$deduped"
+    else
+        if [[ "$dry_run" == "1" && -n "$deduped" ]]; then
+            dg.print "  -Tag(s) not set: [$deduped]"
+        fi
+    fi
 }
-
 function change_max_upload () {
   #Change Maximum Upload speed (KB/s)
   local t_maxup="$1"; local is_invalid="" 
@@ -189,11 +143,11 @@ function change_max_upload () {
   if [ "$is_num" != "" ]; then is_invalid="(Invalid)" ; fi 
      if [[ "$t_maxup" != "" && "$dry_run" != "1" ]]; then
         if [ "$is_num" == "" ]; then 
-            local to_bytes="$(( ${t_maxup%% *} * 1024))"
+
             local t_text="(0=Unlimited)"
             if [ "$t_maxup" == "0" ]; then t_text="(Unlimited)" ;fi
             dg.print "  -Setting max upload speed:[""$t_maxup""] KB/s"  "$t_text"
-           `$qbt_cli torrent limit upload -s "$to_bytes" "$hash"`
+           `$qbtctl -h "$hash" -sul "$t_maxup"`
         else
            dg.print "  -Max upload speed Invalid not set:[""$t_maxup""] KB/s"  "$is_invalid"
         fi
@@ -211,11 +165,10 @@ function change_max_download () {
   if [ "$is_num" != "" ]; then is_invalid="(Invalid)" ; fi 
      if [[ "$t_maxdl" != "" && "$dry_run" != "1" ]]; then
         if [ "$is_num" == "" ]; then 
-            local to_bytes="$(( ${t_maxdl%% *} * 1024))"
             local t_text="(0=Unlimited)"
             if [ "$t_maxdl" == "0" ]; then t_text="(Unlimited)" ;fi 
             dg.print "  -Setting max download speed:[""$t_maxdl""] KB/s"  "$t_text" 
-           `$qbt_cli torrent limit download -s "$to_bytes" "$hash"`
+           `$qbtctl -h "$hash" -sdl "$t_maxdl"`
         else
            dg.print "  -Max download speed Invalid not set:[""$t_maxdl""] KB/s"  "$is_invalid"
         fi
@@ -247,7 +200,7 @@ function change_seedtime () {
         local t_text="("$days" "Days:" "$hrs" "Hours:" "$mins" "Minutes")"
         if [ "$t_seedtime" == "00:00:00" ];then t_text="(Unlimited)" ;fi
         dg.print "  -Setting seedtime:[""$t_seedtime""]" "$t_text"
-        `$qbt_cli torrent share -t "$t_seedtime" "$hash"`
+        `$qbtctl -h "$hash" -sst "$t_seedtime"`
      else 
         dg.print "  -Seedtime Invalid not set:[""$t_seedtime""] (ex:01:02:03)" "$is_invalid"   
      fi
@@ -260,47 +213,34 @@ function change_seedtime () {
 
 function change_ratio_limit () {
   #Change Ratio Limit
-  local t_ratio_limit="$1" ; local is_valid="" 
+  local t_ratio_limit="$1"
   local is_num=$(echo "$t_ratio_limit" | tr -d "[:digit:]")
-  if [ "$is_num" != "" ]; then is_invalid="(Invalid)" ; fi 
+
      if [[ "$t_ratio_limit" != "" && "$dry_run" != "1" ]]; then
-        if [ "$is_num" == "" ]; then 
-           `$qbt_cli torrent share -r "$t_ratio_limit" "$hash"`
+        if [ "$is_num" == "" ] || [ "$is_num" == "." ]; then
+           `$qbtctl -h "$hash" -srl "$t_ratio_limit"`
            dg.print "  -Setting ratio limit:[""$t_ratio_limit""]"
         else
-           dg.print "  -Ratio Limit Invalid not set:[""$t_ratio_limit""]"  "$is_invalid"
+           dg.print "  -Ratio Limit Invalid not set:[""$t_ratio_limit""]"
         fi
      else
      if [[ "$dry_run" == "1" && "$t_ratio_limit" != "" ]]; then 
-        dg.print "  -Ratio limit not set:[""$t_ratio_limit""]"  "$is_invalid"
+        dg.print "  -Ratio limit not set:[""$t_ratio_limit""]"
      fi
   fi
 }
 
 function change_category () {   
- #Change category (check if exists, if not add new category and set)
+ #Change category
   local t_new_category="$1"
   if [[ "$t_new_category" != "" && "$dry_run" != "1" ]]; then
-     local is_cat=`($qbt_cli category list -F csv | tr -s "\n" "," | cut -c15-)`   
-        local t_found=""
-        for i in $(echo $is_cat | tr ',' '\n') ;do
-           if [ "$i" == "$t_new_category" ]; then t_found="(Exists)" ;fi
-        done
-        dg.print "  -Checking if category exists:[""$t_new_category""]"  "$t_found"
-        if [ "$t_found" == "" ]; then 
-           dg.print "  -Category doesn't exist, creating category[""$t_new_category""]"
-           `$qbt_cli category add "$t_new_category"`
            dg.print "  -Changing category:[""$t_new_category""]"
-           `$qbt_cli torrent category --set "$t_new_category" "$hash"`
-         else
-           dg.print "  -Changing category:[""$t_new_category""]"
-          `$qbt_cli torrent category --set "$t_new_category" "$hash"`
-        fi      
+          `$qbtctl -h "$hash" -sc "$t_new_category"`
    else
-     if [[ "$dry_run" == "1" && "$t_new_category" != "" ]]; then 
-         dg.print "  -Category not set:[""$t_new_category""]" 
+     if [[ "$dry_run" == "1" && "$t_new_category" != "" ]]; then
+         dg.print "  -Category not set:[""$t_new_category""]"
      fi
-  fi
+   fi
 }
 
 function change_auto_torrent_managment () {
@@ -310,7 +250,7 @@ function change_auto_torrent_managment () {
   if [[ "$t_atm" != "" && "$dry_run" != "1" ]]; then
       if [ "$is_invalid" == "" ]; then 
          dg.print "  -Setting Automatic Torrent Managment:[""$t_atm""] (0=OFF:1=ON)"
-         `$qbt_cli torrent options -a "$t_atm" "$hash"`  
+         `$qbtctl -h "$hash" -sat "$t_atm"`
       else
          dg.print "  -Automatic Torrent Managment setting is Invalid. Not set :[""$t_atm""] (0=OFF:1=ON)" "$is_invalid"
       fi 
@@ -328,7 +268,7 @@ function change_superseed () {
   if [[ "$t_superseed" != "" && "$dry_run" != "1" ]]; then
       if [ "$is_invalid" == "" ]; then 
          dg.print "  -Setting superseed:[""$t_superseed""] (0=OFF:1=ON)"
-         `$qbt_cli torrent options -z "$t_superseed" "$hash"`
+         `$qbtctl -h "$hash" -sss "$t_superseed"`
   else
          dg.print "  -Superseed setting is Invalid. Not set:[""$t_superseed""] (0=OFF:1=ON)" "$is_invalid"
       fi 
@@ -346,7 +286,7 @@ function change_seqdl () {
   if [[ "$t_seqdl" != "" && "$dry_run" != "1" ]]; then
       if [ "$is_invalid" == "" ]; then
          dg.print "  -Setting sequential download:[""$t_seqdl""] (0=OFF:1=ON)"
-         `$qbt_cli torrent options -s "$t_seqdl" "$hash"`
+         `$qbtctl -h "$hash" -ssd "$t_seqdl"`
    else
          dg.print "  -Sequential download setting is Invalid. Not set:[""$t_seqdl""] (0=OFF:1=ON)" "$is_invalid"
       fi 
@@ -390,10 +330,10 @@ function get_tracker_from_list () {
   fi 
 }
 
-function get_trackers_qbittorrent_cli {
-  dg.print "  -Getting tracker info from:[""$qbt_cli""]"
+function get_trackers_qbtctl {
+  dg.print "  -Getting tracker info from:[""$qbtctl""]"
   #Get tracker(s) and store in list (comma seperated)
-  trackers_qbt=`$qbt_cli torrent tracker list -F csv "$hash" | grep ":" | cut -d ":" -f1,2 | tr -s "\n" ","`
+  trackers_qbt=`$qbtctl -h "$hash" -gtl`
   local num_track=`(echo "$trackers_qbt" | grep -o "," | wc -l)`
   if [[ "$trackers_qbt" == "" || "$trackers_qbt" == ","  ]]; then 
      trackers_qbt="Unknown" 
@@ -438,54 +378,23 @@ function process_defined_trackers {
 
 
 # Error checking functions
-function hash_check {
-  #check if hash is a torrent hash from qbittorrent-cli (use only first 6 chars)
-  #Skip this check if skip_hash_check is "1"
-  if [ "$skip_hash_check" != "1" ]; then
-     local t_hash=${hash:0:6}
-     local t_list=`$qbt_cli torrent list -F csv | cut -d "," -f1 | cut -c1-6 | tr -s "\n" "," | cut -c6-`
-     local t_found=""     
-      dg.print "  -Checking for matching hash:[""$t_hash""]"
-     for i in $(echo $t_list | tr ',' '\n') ;do
-        if [ "$i" == "$t_hash" ]; then t_found="$i" ;fi
-     done
-     if [ "$t_found" = "" ]; then 
-        dg.print "  -Hash check failed [Not found in qBittorrent, or invalid] ... exiting"
-        if [ "$log_level" != "1" ];then 
-           echo "Hash check failed [Not found in qBittorrent, or invalid] ... exiting"
-        fi  
-        exit 1
-     fi     
-   else
-     dg.print "  -Skipped hash check:[skip_hash_check=1]"   
-  fi
-}
 
-function check_for_qbittorrent-cli () {
-  #Check qbittorrent-cli path
+
+function check_for_qbtctl () {
+  #Check qbtctl path
   local is_silent="$1"
   if [ "$is_silent" != "silent" ]; then 
      if [ "$log_level" -ge "1" ]; then
-        dg.print "  -Checking for qbittorrent-cli:[""$qbt_cli""]"
+        dg.print "  -Checking for qbtctl:[""$qbtctl""]"
      fi     
   else
-     if [ ! -f "$qbt_cli" ]; then
-        dg.print "Error with qbittorrent-cli path:[""$qbt_cli""] .. exiting [set path in "$config"]"
+     if [ ! -f "$qbtctl" ]; then
+        dg.print "Error with qbtctl path:[""$qbtctl""] .. exiting [set path in "$config"]"
         exit 1
      fi
   fi
 }
 
-function check_connection {
-  #Checks and displays connection status with qbittorrent-cli and qBittorrent
-  local t_con=`$qbt_cli global info -F property:name="connection status"`
-  if [ "$t_con" != "" ]; then 
-     dg.print "  -Checking connection:[""$t_con""]" 
-  else
-     dg.print " -Checking connection:[Failed] ... exiting"
-     exit 1 
-  fi
-}
 
 function check_for_wait_time {
   #Sleep defined time if setting is set (wait_time) 
@@ -531,11 +440,10 @@ function test_the_logfile {
 }
 
 #Processing Functions
-function get_name_qbittorrent_cli {
+function get_name_qbtctl {
   #Global torrent_name change if found. null ("") if not found. 
   torrent_name=""
-  torrent_name=`$qbt_cli torrent content -F csv "$hash" | cut -d "," -f2 | tail -1`
-  torrent_name=$(echo "$torrent_name" | cut -d "/" -f1)
+  torrent_name=`$qbtctl -h $hash -gn`
   dg.print "  -Getting torrent name:[""$torrent_name""]"
 }
 
@@ -556,12 +464,12 @@ function process_categories {
 
 function process_unknown_tracker {
   #When called. sets all values in [Unknown] section and exits
-  dg.print "  -Empty tracker information from qBitorrent-cli:[Unknown]"
+  dg.print "  -Empty tracker information from qbtctl :[Unknown]"
  
   #Check if no tracker found because bad hash was passed
   #check if the torrent name is empty or has a error message.
   if [ "$torrent_name" == "" ]; then 
-     local t_name=`$qbt_cli torrent content -F csv "$hash" | cut -d "," -f2 | tail -1`
+     local t_name=`$qbtctl torrent content -F csv "$hash" | cut -d "," -f2 | tail -1`
      local chk_name=$(echo "$t_name" | cut -c1-24)
      if [ "$chk_name" == "No torrent matching hash" ]; then 
         dg.print "  -No torrent matching hash:[""$hash""] ... exiting"
@@ -598,11 +506,8 @@ function check_cmdline {
       -h)
     	 log_level=1 ; show_help ;;
       -t)
-         log_level=1 ; check_for_qbittorrent-cli "silent" 
-         show_settings_qbittorrent_cli ;; 
-      -z)
-         log_level=1 ; check_for_qbittorrent-cli "silent" 
-         show_torrent_list_qbittorrent_cli ;;      
+         log_level=1 ; check_for_qbtctl "silent"
+         show_torrent_list_qbtctl ;;
       -n)
          ## [override] No logging (log_level=0)
          if [ "$second_arg" == "" ]; then err_no_hash
@@ -635,25 +540,9 @@ function check_cmdline {
          if [ "$second_arg" == "" ]; then err_no_hash
          else
             hash="$second_arg" ; run_hash_check="1" ; log_level="1"
-            check_for_qbittorrent-cli "silent" 
-            show_all_info_qbittorrent_cli
+            check_for_qbtctl "silent"
+            show_single_info_qbtctl
          fi  ;;
-      -s)
-         if [ "$second_arg" == "" ]; then err_no_hash
-         else
-            hash="$second_arg" ; run_hash_check="1" ; log_level="1"
-            check_for_qbittorrent-cli "silent" 
-            show_seedtime_info_qbittorrent_cli
-         fi ;;
-      -p)
-         log_level="1" ; check_for_qbittorrent-cli "silent" 
-         set_password_qbittorremt_cli ;;        
-      -u)
-         log_level="1" ; check_for_qbittorrent-cli "silent" 
-         set_url_qbittorremt_cli "${second_arg}"  ;;     
-      -l)
-         log_level="1" ; check_for_qbittorrent-cli "silent" 
-         set_login_name_qbittorremt_cli "${second_arg}" ;;       
       **)
          if [ "$log_level" == "1" ];then 
             echo " Invalid arguement .. exiting"
@@ -677,21 +566,16 @@ function show_help {
   echo " Usage: "$0" [OPTION] ... HASH ... [CATEGORY]"
   echo " Change settings on a torrent in qbittorrent depending on tracker or category"
   echo ""
-  echo " OPTION and CATEGORY are optional. qbittorrent-cli required."
+  echo " OPTION and CATEGORY are optional. qbtctl required."
   echo " Options:"
   echo "  -c [/path/config] [OPTION] .. HASH .. [CATEGORY]" 
   echo "  -i [hash]  # Get full Information on a torrent and exit"
-  echo "  -s [hash]  # Show Seedtime and ratio info of a torrent and exit"
   echo "  -d [hash]  # Dry run. Run without changing settings"
   echo "  -n [hash]  # Do Not log (log_level=0) [override] (No info to terminal)"
   echo "  -v [hash]  # Log to terminal (Verbose) (log_level=1) [override]"
   echo "  -f [hash]  # Log to File (log_level=2) [override]"
-  echo "  -t # Test Connection. Show commands to manually set qBittorrent info."
-  echo "  -p # Sets Password in qbittorrent-cli settings (Read prompt)"
-  echo "  -u [url:port] # Sets qBittorent URL in qbittorrent-cli settings"
-  echo "  -l [login] # Sets qBittorrent Login name in qbittorent-cli settings" 
   echo "  -w [path/filename] # Write a default config file to specified path/name" 
-  echo "  -z # Show torrent list (Useful to get a torrent's hash)" 
+  echo "  -t # Show torrent list (Useful to get a torrent's hash)"
   echo "  -h # Display this Help and exit"
   echo " -----------------------------------------------"
   exit 1
@@ -803,7 +687,7 @@ function get_value_conf () {
 function get_settings_conf {
   #Get and set all settings from config
   local section="Settings"
-  qbt_cli=$(get_value_conf "$section" "qbt_cli")
+  qbtctl=$(get_value_conf "$section" "qbtctl")
   trackers_conf=$(get_value_conf "$section" "trackers")
   check_for_trackers=$(get_value_conf "$section" "check_for_trackers")
   defined_trackers_only=$(get_value_conf "$section" "defined_trackers_only")
@@ -812,9 +696,7 @@ function get_settings_conf {
   log_file=$(get_value_conf "$section" "log_file")
   log_clear=$(get_value_conf "$section" "log_clear")
   skip_wait_dryrun=$(get_value_conf "$section" "skip_wait_dryrun")
-  skip_hash_check=$(get_value_conf "$section" "skip_hash_check")
   skip_name=$(get_value_conf "$section" "skip_name")
-  connection_check=$(get_value_conf "$section" "connection_check")
   check_trackers_if_category_found=$(get_value_conf "$section" "check_trackers_if_category_found")  
 }
 
@@ -863,7 +745,7 @@ function write_default_conf () {
    echo "# "00:00:00" = No limit | 0=OFF:1=ON #" >> "$config_path"
    echo "######################################" >> "$config_path"
    echo "[Settings]" >> "$config_path"
-   echo "qbt_cli="""\"/usr/bin/qbt\""" >> "$config_path"
+   echo "qbtctl="""\"/usr/bin/qbtctl\""" >> "$config_path"
    echo "trackers="""\"http://foo.org\""" >> "$config_path"
    echo "check_for_trackers="""\"1\""" >> "$config_path"
    echo "defined_trackers_only="""\"0\""" >> "$config_path"
@@ -876,9 +758,7 @@ function write_default_conf () {
    fi
    echo "log_clear="""\"0\""" >> "$config_path"
    echo "skip_wait_dryrun="""\"1\""" >> "$config_path"
-   echo "skip_hash_check="""\"0\""" >> "$config_path"
    echo "skip_name="""\"0\""" >> "$config_path"
-   echo "connection_check="""\"0\""" >> "$config_path"
    echo "check_trackers_if_category_found="""\"0\""" >> "$config_path"
    echo "[Unknown]" >> "$config_path"
    echo "tag="""\"Unknown\""" >> "$config_path"
@@ -928,7 +808,7 @@ function write_default_conf () {
 function show_settings {
   #Shows all settings. [debug]
   echo "**[Settings]*********************************************"
-  echo "qbt_cli path:[""$qbt_cli""]"
+  echo "qbtctl path:[""$qbtctl""]"
   echo "tracker List:[""$trackers_conf""]"
   echo "check trackers:[""$check_for_trackers""]"
   echo "defined trackers only:[""$defined_trackers_only""]"
@@ -937,9 +817,7 @@ function show_settings {
   echo "log file:[""$log_file""]"
   echo "log clear:[""$log_clear""]"
   echo "skip wait dryrun:[""$skip_wait_dryrun""]"
-  echo "skip hash:[""$skip_hash_check""]"
   echo "skip name:[""$skip_name""]"
-  echo "connection check:[""$connection_check""]"
   echo "check trackers if category found:[""$check_trackers_if_category_found""]"
   echo "torrent_name:[""$torrent_name""]"
   echo "*********************************************************"
@@ -985,32 +863,21 @@ if [ "$log_level" == "2" ]; then
 fi 
 
 init_logging # Start logging if set. 
-check_for_qbittorrent-cli #Check if qbt-cli exists
+check_for_qbtctl #Check if qbt-cli exists
 #If wait_time is set wait the defined time in seconds [optional skip on dry run]
 check_for_wait_time
-
-if [ "$run_hash_check" == "1" ]; then 
-   #Check hash tag len (skip_hash_check="1" to override) 
-   hash_check 
-fi 
 
 dg.print "  -Arguments:[""$argu""]" 
 dg.print "  -Hash:[""${hash}""]"
 dg.print "  -Category:[""${category}""]"
 
-# If $connection_check="1" then check connection
-if [ "$connection_check" == "1" ]; then 
-   check_connection 
-else 
-   dg.print "  -Skipped connection check:[connection_check=0]" 
-fi
-
-#If skip_name is set then dont show name. if log_level is 0 no need to show name
+ #If skip_name is set then dont show name. if log_level is 0 no need to show name
 if [ "$skip_name" != "1" ]; then 
-   if [ "$log_level" != "0" ]; then get_name_qbittorrent_cli ;fi
+   if [ "$log_level" != "0" ]; then get_name_qbtctl ;fi
    else 
    dg.print "  -Skipped getting name:[skip_name=1]"
 fi
+
 #########
 # Begin #
 #########
@@ -1035,7 +902,7 @@ if [ "$category_found" == "1" ]; then
 fi
 
 if [ "$check_for_trackers" == "1" ]; then
-   get_trackers_qbittorrent_cli #Function to get tracker info from qbittorrent-cli
+   get_trackers_qbtctl #Function to get tracker info from qbtctl
 else 
    dg.print "  -Skipped checking for trackers:[check_for_trackers=0]"
    finished
