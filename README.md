@@ -12,8 +12,7 @@
  - Optional verbose output to terminal or to log file.txt.
  - Config file defaults to /home/user/.qbt-onadd/settings.conf
  - Config can be set with -c in command-line, or hard-coded in script.
- - You can write a default config with -w (see -h).  
- - Minimal version available with example code (removed cmdline,logging,error checking and config).  
+ - You can write a default config with -w (see -h).    
  - Run from terminal, or add to qBittorrent External Add path in your qBittorrent webui or config.
 ***
 ## Requirements:
@@ -41,7 +40,7 @@ Note: torrent_hash must be at least 6 characters in length. Change skip_hash_che
 ## General Info:
 &nbsp; &nbsp;Helper script for qbtctl, run manually or use for changing settings on a added torrent in qBittorrent.
 
-&nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. General uses are setting limits to torrents added based on category or tracker. Add a tag, or change category name to a torrent to use when torrent is added. Adding or editing your trackers, categorys, tags and settings are easily done in one config, or can be run with a minimal version and hardcode your desired settings (see bottom of qbt-onadd-minimal.sh in extras for more info). <br /> <br />
+&nbsp; &nbsp;&nbsp; &nbsp; This script is for users who want to control a torrent. General uses are setting limits to torrents added based on category or tracker. Add a tag, or change category name to a torrent to use when torrent is added. Adding or editing your trackers, categorys, tags and settings are easily done in one config. <br /> <br />
 To authenticate with qBittorrent, Credentials can be set in qbtctl by using a commandline arguement. -i or --setup (see Usage below) <br /> <br />
 &nbsp; &nbsp;&nbsp; &nbsp; All settings can be edited in the config file per tracker and/or category. Settings include speeds, seedtimes and ratio
 limit. Other options like ATM, superseed and sequential downloading can be enabled or disabled. 
