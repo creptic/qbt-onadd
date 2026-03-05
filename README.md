@@ -20,6 +20,22 @@
 - qBittorrent server info can be set manully in qbtctl (See [Setup and Testing](#setup-and-testing))    
 - qBittorrent server (webui). Tested with qbittorrent-nox (qBittorrent v5.1.0)
 ***
+
+## ⚡ Quick Start 
+### Full Setup (one line)
+```bash
+wget https://github.com/creptic/qbtctl/releases/latest/download/qbtctl \
+  && chmod +x qbtctl \
+  && ./qbtctl --setup \
+  && wget https://raw.githubusercontent.com/creptic/qbt-onadd/main/qbt-onadd.sh \
+  && chmod +x qbt-onadd.sh \
+  && ./qbt-onadd.sh -w ~/.qbt-onadd/settings.conf
+```
+- Add `/pathto/qbt-onadd.sh "%I" "%L"` to **External Add path** in qBittorrent -> download settings ("%L" is category and optional)"'
+- Use editor like nano to edit your settings in ~/.qbt-onadd/settings.conf (default)'
+- Run ./qbt-onadd.sh -t to list torrents to get torrent hash
+- Run ./qbt-onadd.sh -d hash (from above) category (optional)
+---
 ## Basic Usage:
 - Teminal: (category is optional)
 ```
